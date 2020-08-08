@@ -1,12 +1,13 @@
 #include <FastLED.h>
 #include "LEDShader.h"
+#include "ChaserShader.h"
 
-#define NUM_STRIPS 7
+#define NUM_STRIPS 3
 #define NUM_LEDS_PER_STRIP 300
 
 CRGB stripes[NUM_STRIPS][NUM_LEDS_PER_STRIP];
 
-LEDShader *shader;
+ChaserShader *shader;
 
 // LEDShader *currentShader;
 // CRGB leds0[NUM_LEDS_PER_STRIP];
@@ -18,14 +19,14 @@ void setup()
   FastLED.addLeds<WS2812, 2, GRB>(stripes[0], NUM_LEDS_PER_STRIP);
   FastLED.addLeds<WS2812, 5, GRB>(stripes[1], NUM_LEDS_PER_STRIP);
   FastLED.addLeds<WS2812, 6, GRB>(stripes[2], NUM_LEDS_PER_STRIP);
-  FastLED.addLeds<WS2812, 7, GRB>(stripes[0], NUM_LEDS_PER_STRIP);
-  FastLED.addLeds<WS2812, 8, GRB>(stripes[1], NUM_LEDS_PER_STRIP);
-  FastLED.addLeds<WS2812, 14, GRB>(stripes[2], NUM_LEDS_PER_STRIP);
-  FastLED.addLeds<WS2812, 20, GRB>(stripes[2], NUM_LEDS_PER_STRIP);
+  // FastLED.addLeds<WS2812, 7, GRB>(stripes[0], NUM_LEDS_PER_STRIP);
+  // FastLED.addLeds<WS2812, 8, GRB>(stripes[1], NUM_LEDS_PER_STRIP);
+  // FastLED.addLeds<WS2812, 14, GRB>(stripes[2], NUM_LEDS_PER_STRIP);
+  // FastLED.addLeds<WS2812, 20, GRB>(stripes[2], NUM_LEDS_PER_STRIP);
 
   FastLED.clear();
 
-  shader = new LEDShader(NUM_LEDS_PER_STRIP);
+  shader = new ChaserShader(NUM_LEDS_PER_STRIP);
 
   // frameTimer.begin(drawFrame, 1000000 / 60);
 }
