@@ -5,6 +5,11 @@ LEDShader::LEDShader(long numPixels)
   this->numPixels = numPixels;
 }
 
+void LEDShader::update(float deltaTime)
+{
+  time += deltaTime * speed;
+}
+
 void LEDShader::render(CRGB *leds)
 {
   float hue;
