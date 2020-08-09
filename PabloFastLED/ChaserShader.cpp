@@ -5,15 +5,20 @@
 void ChaserShader::render(CRGB *leds)
 {
   float intensity;
+  float value;
+  float x;
 
   for (int i = 0; i < this->numPixels; i++)
   {
-    // density = sinf(time * 0.5234) * 0.4 + 0.5;
 
-    float x = i * scale + time * speed;
+    x = this->position + i;
 
     intensity = chaserNoise(x, density);
 
-    leds[i] = CHSV(0, 255, intensity * 255);
+    if (leds[i].r + leds[i].g + leds[i].b < 50) // to prevent mixing colors. TODO: replace with blending modes
+    {
+      value = intensity * brightness;
+      leds[i] = CHSV(hue, saturation, value);
+    }
   }
 }

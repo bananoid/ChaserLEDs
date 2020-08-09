@@ -12,10 +12,16 @@ class LEDShader
 {
 private:
 public:
-  float time = 0;
+  float position = 0;
   float speed = 1;
+
   float density = 1;
-  float scale = 1;
+  // float scale = 1;
+
+  float brightness = 255;
+  float saturation = 255;
+  float hue = 255;
+
   int blendingMode = BLEND_NORMAL;
   long numPixels;
 
