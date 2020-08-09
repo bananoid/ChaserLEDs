@@ -22,7 +22,6 @@ float smoothstep(float start, float stop, float x)
 {
   float t = clamp((x - start) / (stop - start), 0.0, 1.0);
   return t * t * (3.0 - 2.0 * t);
-  // return t * t * t * (t * (t * 6 - 15) + 10);
 }
 
 struct vec2
@@ -49,8 +48,8 @@ float chaserNoise(float x, float density)
   float a = smoothstep(density + denR, density - denR, rnd(i));
   float b = smoothstep(density + denR, density - denR, rnd(i + 1));
 
-  // float u = smoothstep(0, 1, f);
-  return mix(a, b, f);
+  float u = smoothstep(0, 1, f);
+  return mix(a, b, u);
 }
 
 vec2 sinf(vec2 st)
@@ -67,7 +66,7 @@ vec2 random2(vec2 st)
       -1.0 + 2.0 * fract(sinf(st.x) * 43758.5453123));
 }
 
-float noise(float x, float y)
+float pnoise(float x, float y)
 {
   float ix = floor(x);
   float fx = fract(x);
