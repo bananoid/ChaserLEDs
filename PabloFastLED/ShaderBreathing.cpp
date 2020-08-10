@@ -1,5 +1,4 @@
 #include "ShaderBreathing.h"
-// #include "mathUtils.h"
 
 void ShaderBreathing::render(Strip *strip, BlendingMode blendingMode)
 {

@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <FastLED.h>
 #include "Strip.h"
+#include "GFXUtils.h"
 
 enum BlendingMode
 {

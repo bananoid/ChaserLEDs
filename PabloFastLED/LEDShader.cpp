@@ -27,7 +27,7 @@ void LEDShader::blend(CRGB *leds, int ledInx, CRGB color, BlendingMode blendingM
     leds[ledInx] = color;
     break;
   case NORMAL:
-    leds[ledInx] = color; //TODO: alpha blending
+    leds[ledInx] = GFXUtils::alphaBlend(leds[ledInx], color);
     break;
   case ADD:
     leds[ledInx].r += color.r;

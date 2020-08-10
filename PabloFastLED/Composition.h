@@ -9,7 +9,7 @@
 #include "Strip.h"
 #include "Layer.h"
 
-#define MAX_LAYER_COUNT 3
+#define MAX_LAYER_COUNT 2
 
 class Composition
 {
