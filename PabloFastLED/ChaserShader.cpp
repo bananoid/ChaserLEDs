@@ -17,27 +17,6 @@ void ChaserShader::render(Strip *strip, BlendingMode blendingMode)
     value = intensity * brightness;
     color = CHSV(hue, saturation, value);
 
-    switch (blendingMode)
-    {
-    case BACKGROUND:
-      strip->leds[i] = color;
-      break;
-    case NORMAL:
-      strip->leds[i] = color; //TODO: alpha blending
-      break;
-    case ADD:
-      strip->leds[i].r += color.r;
-      strip->leds[i].g += color.g;
-      strip->leds[i].b += color.b;
-      break;
-    case MULTIPLY:
-      strip->leds[i].r *= color.r;
-      strip->leds[i].g *= color.g;
-      strip->leds[i].b *= color.b;
-      break;
-
-    default:
-      break;
-    }
+    blend(strip->leds, i, color, blendingMode);
   }
 }

@@ -30,6 +30,7 @@ public:
   LEDShader();
   virtual void update(float deltaTime);
   virtual void render(Strip *strip, BlendingMode blendingMode);
+  virtual void blend(CRGB *leds, int ledInx, CRGB color, BlendingMode blendingMode);
 };
 
 #endif
