@@ -1,0 +1,34 @@
+#include "Composition.h"
+
+Composition::Composition()
+{
+  layers[0] = new Layer();
+  layers[0]->shader = new ChaserShader();
+  layers[0]->shader->brightness = 255;
+  layers[0]->shader->speed = 2;
+  layers[0]->shader->hue = 10;
+  layers[0]->shader->density = 0.1;
+
+  layers[1] = new Layer();
+  layers[1]->shader = new ChaserShader();
+  layers[1]->shader->brightness = 255;
+  layers[1]->shader->speed = -3;
+  layers[1]->shader->hue = 10;
+  layers[1]->shader->density = 0.1;
+}
+
+void Composition::update(float deltaTime)
+{
+  for (int i = 0; i < MAX_LAYER_COUNT; i++)
+  {
+    layers[i]->shader->update(deltaTime);
+  }
+}
+
+void Composition::render(Strip *strip)
+{
+  for (int i = 0; i < MAX_LAYER_COUNT; i++)
+  {
+    layers[i]->shader->render(strip);
+  }
+}

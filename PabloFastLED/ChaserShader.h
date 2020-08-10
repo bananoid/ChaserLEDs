@@ -1,8 +1,13 @@
 #include "LEDShader.h"
 
+#ifndef CHASER_SHADER_H
+#define CHASER_SHADER_H
+
 class ChaserShader : public LEDShader
 {
 public:
-  ChaserShader(long numPixels) : LEDShader(numPixels){};
-  void render(CRGB *leds, int startInx) override;
+  ChaserShader() : LEDShader(){};
+  void render(Strip *strip) override;
 };
+
+#endif

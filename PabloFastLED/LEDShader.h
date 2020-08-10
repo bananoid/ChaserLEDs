@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <FastLED.h>
+#include "Strip.h"
 
 #ifndef LEDSHADER_H
 #define LEDSHADER_H
@@ -23,11 +24,10 @@ public:
   float hue = 255;
 
   int blendingMode = BLEND_NORMAL;
-  long numPixels;
 
-  LEDShader(long numPixels);
+  LEDShader();
   virtual void update(float deltaTime);
-  virtual void render(CRGB *leds, int startInx);
+  virtual void render(Strip *strip);
 };
 
 #endif

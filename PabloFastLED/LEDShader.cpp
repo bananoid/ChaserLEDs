@@ -1,8 +1,7 @@
 #include "LEDShader.h"
 
-LEDShader::LEDShader(long numPixels)
+LEDShader::LEDShader()
 {
-  this->numPixels = numPixels;
 }
 
 void LEDShader::update(float deltaTime)
@@ -10,7 +9,7 @@ void LEDShader::update(float deltaTime)
   position += deltaTime * speed;
 }
 
-void LEDShader::render(CRGB *leds, int startInx)
+void LEDShader::render(Strip *strip)
 {
   // float hue;
   // for (int i = 0; i < this->numPixels; i++)
