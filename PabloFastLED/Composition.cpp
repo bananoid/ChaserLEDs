@@ -4,7 +4,7 @@ Composition::Composition()
 {
   layers[0] = new Layer();
   layers[0]->blendingMode = BACKGROUND;
-  layers[0]->shader = new ChaserShader();
+  layers[0]->shader = new ShaderBreathing();
   layers[1]->shader->brightness = 255;
   layers[0]->shader->scale = 1;
   layers[0]->shader->hue = 10;

@@ -18,5 +18,7 @@ void ShaderBreathing::render(Strip *strip, BlendingMode blendingMode)
 
     value = intensity * brightness;
     color = CHSV(hue, saturation, value);
+
+    blend(strip->leds, i, color, blendingMode);
   }
 }
