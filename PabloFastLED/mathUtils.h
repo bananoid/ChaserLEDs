@@ -1,6 +1,3 @@
-#ifndef MATH_UTILS_H
-#define MATH_UTILS_H
-
 float fract(float x)
 {
   return x - ((int)x);
@@ -90,5 +87,3 @@ float snoise(float x)
 {
   return (sinf(2.0 * x) + sinf(PI * x)) * 0.5 + 0.5;
 }
-
-#endif

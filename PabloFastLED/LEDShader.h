@@ -21,7 +21,7 @@ public:
   float speed = 1;
 
   float density = 1;
-  float scale = 1;
+  // float scale = 1;
 
   float brightness = 255;
   float saturation = 255;
@@ -30,7 +30,6 @@ public:
   LEDShader();
   virtual void update(float deltaTime);
   virtual void render(Strip *strip, BlendingMode blendingMode);
-  virtual void blend(CRGB *leds, int ledInx, CRGB color, BlendingMode blendingMode);
 };
 
 #endif
