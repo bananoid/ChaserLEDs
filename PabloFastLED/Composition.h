@@ -6,6 +6,8 @@
 
 #include "LEDShader.h"
 #include "ChaserShader.h"
+#include "ShaderBreathing.h"
+
 #include "Strip.h"
 #include "Layer.h"
 
