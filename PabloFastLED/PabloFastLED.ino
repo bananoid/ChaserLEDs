@@ -16,7 +16,7 @@ ChaserShader *shader4;
 // LEDShader *currentShader;
 // CRGB leds0[NUM_LEDS_PER_STRIP];
 
-IntervalTimer frameTimer;
+// IntervalTimer frameTimer;
 
 float deltaTime = 0;
 
@@ -47,12 +47,12 @@ void setup()
   shader3 = new ChaserShader(NUM_LEDS_PER_STRIP);
   shader4 = new ChaserShader(NUM_LEDS_PER_STRIP);
 
-  frameTimer.begin(drawFrame, 1000000 / 60);
+  // frameTimer.begin(drawFrame, 1000000 / 30);
 }
 
 void loop()
 {
-  // drawFrame();
+  drawFrame();
 }
 
 void drawFrame()
@@ -93,13 +93,13 @@ void drawFrame()
     shader4->update(deltaTimeF);
 
     shader1->render(leds, NUM_LEDS_PER_STRIP * stripInx);
-    shader2->render(leds, NUM_LEDS_PER_STRIP * stripInx);
-    shader3->render(leds, NUM_LEDS_PER_STRIP * stripInx);
-    shader4->render(leds, NUM_LEDS_PER_STRIP * stripInx);
+    // shader2->render(leds, NUM_LEDS_PER_STRIP * stripInx);
+    // shader3->render(leds, NUM_LEDS_PER_STRIP * stripInx);
+    // shader4->render(leds, NUM_LEDS_PER_STRIP * stripInx);
   }
 
   LEDS.show();
 
   deltaTime = millis() - time;
-  // Serial.println(deltaTime);
+  Serial.println(deltaTime);
 }
