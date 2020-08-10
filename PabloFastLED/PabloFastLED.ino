@@ -2,10 +2,11 @@
 #include "LEDShader.h"
 #include "ChaserShader.h"
 
-#define NUM_STRIPS 3
 #define NUM_LEDS_PER_STRIP 300
+#define NUM_STRIPS 7
 
-CRGB stripes[NUM_STRIPS][NUM_LEDS_PER_STRIP];
+// CRGB stripes[NUM_STRIPS][NUM_LEDS_PER_STRIP];
+CRGB leds[NUM_STRIPS * NUM_LEDS_PER_STRIP];
 
 ChaserShader *shader1;
 ChaserShader *shader2;
@@ -19,23 +20,27 @@ IntervalTimer frameTimer;
 
 float deltaTime = 0;
 
+void clearAll()
+{
+  for (int i = 0; i < NUM_STRIPS; i++)
+  {
+    for (int j = 0; j < NUM_LEDS_PER_STRIP; j++)
+    {
+      leds[(i * NUM_LEDS_PER_STRIP) + j] = CRGB::Black;
+    }
+  }
+}
+
 void setup()
 {
-  // Fot teensy 4.0 use 1,0,24,25,19,18,14,15,17,16,22,23,20,21,26,27
+  // LED computations are done in parallel in the ports 19,18,14,15,17,16,22
+  LEDS.addLeds<NUM_STRIPS, WS2811, 19, GRB>(leds, NUM_LEDS_PER_STRIP);
 
-  FastLED.addLeds<WS2812, 2, GRB>(stripes[0], NUM_LEDS_PER_STRIP);
-  FastLED.addLeds<WS2812, 5, GRB>(stripes[1], NUM_LEDS_PER_STRIP);
-  FastLED.addLeds<WS2812, 6, GRB>(stripes[2], NUM_LEDS_PER_STRIP);
-  // FastLED.addLeds<WS2812, 7, GRB>(stripes[0], NUM_LEDS_PER_STRIP);
-  // FastLED.addLeds<WS2812, 8, GRB>(stripes[1], NUM_LEDS_PER_STRIP);
-  // FastLED.addLeds<WS2812, 14, GRB>(stripes[2], NUM_LEDS_PER_STRIP);
-  // FastLED.addLeds<WS2812, 20, GRB>(stripes[2], NUM_LEDS_PER_STRIP);
-  FastLED.setBrightness(255);
-  FastLED.setDither(0);
+  LEDS.setBrightness(255);
+  LEDS.setDither(0);
 
-  FastLED.clear();
-
-  // shader = new ChaserShader(NUM_LEDS_PER_STRIP);
+  // LEDS.clear();
+  clearAll();
 
   shader1 = new ChaserShader(NUM_LEDS_PER_STRIP);
   shader2 = new ChaserShader(NUM_LEDS_PER_STRIP);
@@ -47,6 +52,7 @@ void setup()
 
 void loop()
 {
+  // drawFrame();
 }
 
 void drawFrame()
@@ -55,7 +61,8 @@ void drawFrame()
   float time = millis();
   float deltaTimeF = deltaTime * 0.001; // To pass delta time to seconds
 
-  FastLED.clear();
+  // LEDS.clear();
+  clearAll();
 
   for (int stripInx = 0; stripInx < NUM_STRIPS; stripInx++)
   {
@@ -85,12 +92,13 @@ void drawFrame()
     shader3->update(deltaTimeF);
     shader4->update(deltaTimeF);
 
-    shader1->render(stripes[stripInx]);
-    shader2->render(stripes[stripInx]);
-    shader3->render(stripes[stripInx]);
-    shader4->render(stripes[stripInx]);
+    shader1->render(leds, NUM_LEDS_PER_STRIP * stripInx);
+    shader2->render(leds, NUM_LEDS_PER_STRIP * stripInx);
+    shader3->render(leds, NUM_LEDS_PER_STRIP * stripInx);
+    shader4->render(leds, NUM_LEDS_PER_STRIP * stripInx);
   }
-  FastLED.show();
+
+  LEDS.show();
 
   deltaTime = millis() - time;
   // Serial.println(deltaTime);

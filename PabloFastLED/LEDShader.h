@@ -27,7 +27,7 @@ public:
 
   LEDShader(long numPixels);
   virtual void update(float deltaTime);
-  virtual void render(CRGB *leds);
+  virtual void render(CRGB *leds, int startInx);
 };
 
 #endif

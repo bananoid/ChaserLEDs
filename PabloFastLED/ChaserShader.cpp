@@ -2,13 +2,13 @@
 #include "mathUtils.h"
 #include "Perlin.h"
 
-void ChaserShader::render(CRGB *leds)
+void ChaserShader::render(CRGB *leds, int startInx)
 {
   float intensity;
   float value;
   float x;
 
-  for (int i = 0; i < this->numPixels; i++)
+  for (int i = startInx; i < this->numPixels + startInx; i++)
   {
 
     x = this->position + i;

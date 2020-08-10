@@ -10,7 +10,7 @@ void LEDShader::update(float deltaTime)
   position += deltaTime * speed;
 }
 
-void LEDShader::render(CRGB *leds)
+void LEDShader::render(CRGB *leds, int startInx)
 {
   // float hue;
   // for (int i = 0; i < this->numPixels; i++)
