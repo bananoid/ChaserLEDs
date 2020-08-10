@@ -9,7 +9,7 @@ void LEDShader::update(float deltaTime)
   position += deltaTime * speed;
 }
 
-void LEDShader::render(Strip *strip)
+void LEDShader::render(Strip *strip, BlendingMode blendingMode)
 {
   // float hue;
   // for (int i = 0; i < this->numPixels; i++)

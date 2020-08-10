@@ -1,13 +1,17 @@
+#ifndef LEDSHADER_H
+#define LEDSHADER_H
+
 #include <Arduino.h>
 #include <FastLED.h>
 #include "Strip.h"
 
-#ifndef LEDSHADER_H
-#define LEDSHADER_H
-
-#define BLEND_NORMAL 1
-#define BLEND_ADD 2
-#define BLEND_MULTIPLY 3
+enum BlendingMode
+{
+  BACKGROUND,
+  NORMAL,
+  ADD,
+  MULTIPLY
+};
 
 class LEDShader
 {
@@ -23,11 +27,9 @@ public:
   float saturation = 255;
   float hue = 255;
 
-  int blendingMode = BLEND_NORMAL;
-
   LEDShader();
   virtual void update(float deltaTime);
-  virtual void render(Strip *strip);
+  virtual void render(Strip *strip, BlendingMode blendingMode);
 };
 
 #endif
