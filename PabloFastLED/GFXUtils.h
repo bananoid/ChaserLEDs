@@ -37,9 +37,8 @@ public:
 
   static CRGB alphaBlend(CRGB background, CRGB color)
   {
-    float alpha = (color.r + color.g + color.b) / 765.0;
+    float alpha = (color.r + color.g + color.b) / 255.0;
     return mix(background, color, alpha);
-    // return CRGB(alpha * 255, alpha * 255, alpha * 255);
   }
 
   static float smoothstep(float start, float stop, float x)
@@ -61,8 +60,8 @@ public:
     float a = smoothstep(density + denR, density - denR, rnd(i));
     float b = smoothstep(density + denR, density - denR, rnd(i + 1));
 
-    float u = smoothstep(0, 1, f);
-    return mix(a, b, u);
+    // float u = smoothstep(0, 1, f);
+    return mix(a, b, f);
   }
 
   // struct vec2
