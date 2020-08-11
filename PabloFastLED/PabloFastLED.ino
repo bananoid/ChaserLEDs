@@ -31,8 +31,6 @@ void clearAll()
 
 void setup()
 {
-  delay(500);
-  Serial.begin(9600);
   // LED computations are done in parallel in the ports 19,18,14,15,17,16,22
   LEDS.addLeds<NUM_STRIPS, WS2811, 19, GRB>(leds, NUM_LEDS_PER_STRIP);
 
@@ -64,6 +62,8 @@ void drawFrame()
 
   float time = millis();
   float deltaTimeF = deltaTime * 0.001; // To pass delta time to seconds
+
+  clearAll();
 
   for (int stripInx = 0; stripInx < NUM_STRIPS; stripInx++)
   {
