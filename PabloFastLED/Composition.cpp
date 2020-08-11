@@ -6,46 +6,43 @@
 Composition::Composition()
 {
 
-  layers[0] = new Layer();
-  layers[0]->blendingMode = BACKGROUND;
-  layers[0]->shader = new ShaderBreathing();
-  layers[0]->shader->brightness = 255;
-  layers[0]->shader->scale = 0.2;
-  layers[0]->shader->speed = -2.3;
-  layers[0]->shader->hue = 20;
-  layers[0]->shader->density = 0.0;
+  shaders[0] = new ShaderBreathing();
+  shaders[0]->blendingMode = BACKGROUND;
+  shaders[0]->brightness = 255;
+  shaders[0]->scale = 0.2;
+  shaders[0]->speed = -2.3;
+  shaders[0]->hue = 20;
+  shaders[0]->density = 0.0;
 
-  layers[1] = new Layer();
-  layers[1]->blendingMode = NORMAL;
-  layers[1]->shader = new ChaserShader();
-  layers[1]->shader->brightness = 255;
-  layers[1]->shader->scale = 0.7;
-  layers[1]->shader->speed = 2.1;
-  layers[1]->shader->hue = 0;
-  layers[1]->shader->density = 0.3;
+  shaders[1] = new ChaserShader();
+  shaders[1]->blendingMode = NORMAL;
+  shaders[1]->brightness = 255;
+  shaders[1]->scale = 0.7;
+  shaders[1]->speed = 2.1;
+  shaders[1]->hue = 0;
+  shaders[1]->density = 0.3;
 
-  layers[2] = new Layer();
-  layers[2]->blendingMode = NORMAL;
-  layers[2]->shader = new ShaderBreathing();
-  layers[2]->shader->brightness = 255;
-  layers[2]->shader->scale = 0.003;
-  layers[2]->shader->speed = -30;
-  layers[2]->shader->hue = 150;
-  layers[2]->shader->density = 0.0;
+  shaders[2] = new ShaderBreathing();
+  shaders[2]->blendingMode = NORMAL;
+  shaders[2]->brightness = 255;
+  shaders[2]->scale = 0.003;
+  shaders[2]->speed = -30;
+  shaders[2]->hue = 150;
+  shaders[2]->density = 0.0;
 }
 
 void Composition::update(float deltaTime)
 {
-  for (int i = 0; i < MAX_LAYER_COUNT; i++)
+  for (int i = 0; i < MAX_SHADERS_COUNT; i++)
   {
-    layers[i]->shader->update(deltaTime);
+    shaders[i]->update(deltaTime);
   }
 }
 
 void Composition::render(Strip *strip)
 {
-  for (int i = 0; i < MAX_LAYER_COUNT; i++)
+  for (int i = 0; i < MAX_SHADERS_COUNT; i++)
   {
-    layers[i]->shader->render(strip, layers[i]->blendingMode);
+    shaders[i]->render(strip);
   }
 }

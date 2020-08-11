@@ -9,7 +9,7 @@ void LEDShader::update(float deltaTime)
   position += deltaTime * speed;
 }
 
-void LEDShader::render(Strip *strip, BlendingMode blendingMode)
+void LEDShader::render(Strip *strip)
 {
   // float hue;
   // for (int i = 0; i < this->numPixels; i++)
@@ -19,7 +19,7 @@ void LEDShader::render(Strip *strip, BlendingMode blendingMode)
   // }
 }
 
-void LEDShader::blend(CRGB *leds, int ledInx, CRGB color, BlendingMode blendingMode)
+void LEDShader::blend(CRGB *leds, int ledInx, CRGB color)
 {
   switch (blendingMode)
   {
