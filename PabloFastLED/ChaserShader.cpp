@@ -1,5 +1,4 @@
 #include "ChaserShader.h"
-#include "mathUtils.h"
 
 void ChaserShader::render(Strip *strip, BlendingMode blendingMode)
 {
@@ -10,9 +9,9 @@ void ChaserShader::render(Strip *strip, BlendingMode blendingMode)
   for (int i = strip->startInx; i < strip->numOfLed + strip->startInx; i++)
   {
 
-    x = this->position + i;
+    x = this->position + i * scale;
 
-    intensity = chaserNoise(x, density);
+    intensity = GFXUtils::chaserNoiseSmooth(x, density);
 
     value = intensity * brightness;
     color = CHSV(hue, saturation, value);
