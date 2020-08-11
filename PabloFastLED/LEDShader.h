@@ -4,7 +4,6 @@
 #include <Arduino.h>
 #include <FastLED.h>
 #include "Strip.h"
-#include "GFXUtils.h"
 
 enum BlendingMode
 {
@@ -22,7 +21,7 @@ public:
   float speed = 1;
 
   float density = 1;
-  float scale = 1;
+  // float scale = 1;
 
   float brightness = 255;
   float saturation = 255;
