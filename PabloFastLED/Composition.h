@@ -4,18 +4,16 @@
 #include <Arduino.h>
 #include <FastLED.h>
 
+#include "Strip.h"
 #include "LEDShader.h"
 
-#include "Strip.h"
-#include "Layer.h"
-
-#define MAX_LAYER_COUNT 3
+#define MAX_SHADERS_COUNT 3
 
 class Composition
 {
 private:
 public:
-  Layer *layers[MAX_LAYER_COUNT];
+  LEDShader *shaders[MAX_SHADERS_COUNT];
   Composition();
   virtual void update(float deltaTime);
   virtual void render(Strip *strip);

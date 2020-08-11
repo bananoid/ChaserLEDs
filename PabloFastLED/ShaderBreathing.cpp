@@ -1,6 +1,6 @@
 #include "ShaderBreathing.h"
 
-void ShaderBreathing::render(Strip *strip, BlendingMode blendingMode)
+void ShaderBreathing::render(Strip *strip)
 {
   float intensity;
   float value;
@@ -17,6 +17,6 @@ void ShaderBreathing::render(Strip *strip, BlendingMode blendingMode)
     value = intensity * brightness;
     color = CHSV(hue, saturation, value);
 
-    blend(strip->leds, i, color, blendingMode);
+    blend(strip->leds, i, color);
   }
 }

@@ -28,10 +28,12 @@ public:
   float saturation = 255;
   float hue = 255;
 
+  BlendingMode blendingMode = NORMAL;
+
   LEDShader();
   virtual void update(float deltaTime);
-  virtual void render(Strip *strip, BlendingMode blendingMode);
-  virtual void blend(CRGB *leds, int ledInx, CRGB color, BlendingMode blendingMode);
+  virtual void render(Strip *strip);
+  virtual void blend(CRGB *leds, int ledInx, CRGB color);
 };
 
 #endif

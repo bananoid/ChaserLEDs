@@ -1,6 +1,6 @@
 #include "ChaserShader.h"
 
-void ChaserShader::render(Strip *strip, BlendingMode blendingMode)
+void ChaserShader::render(Strip *strip)
 {
   float intensity;
   float value;
@@ -16,6 +16,6 @@ void ChaserShader::render(Strip *strip, BlendingMode blendingMode)
     value = intensity * brightness;
     color = CHSV(hue, saturation, value);
 
-    blend(strip->leds, i, color, blendingMode);
+    blend(strip->leds, i, color);
   }
 }

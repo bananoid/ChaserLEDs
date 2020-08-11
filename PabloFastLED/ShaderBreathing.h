@@ -7,7 +7,7 @@ class ShaderBreathing : public LEDShader
 {
 public:
   ShaderBreathing() : LEDShader(){};
-  void render(Strip *strip, BlendingMode blendingMode) override;
+  void render(Strip *strip) override;
 };
 
 #endif

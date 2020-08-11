@@ -7,7 +7,7 @@ class ChaserShader : public LEDShader
 {
 public:
   ChaserShader() : LEDShader(){};
-  void render(Strip *strip, BlendingMode blendingMode) override;
+  void render(Strip *strip) override;
 };
 
 #endif
