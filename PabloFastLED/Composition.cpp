@@ -31,18 +31,10 @@ Composition::Composition()
   shaders[2]->density = 0.0;
 }
 
-void Composition::update(float deltaTime)
+void Composition::update(Strip *strip, float deltaTime)
 {
-  for (int i = 0; i < MAX_SHADERS_COUNT; i++)
+  for (int i = 0; i < NUM_SHADER_PER_COMPISITION; i++)
   {
-    shaders[i]->update(deltaTime);
-  }
-}
-
-void Composition::render(Strip *strip)
-{
-  for (int i = 0; i < MAX_SHADERS_COUNT; i++)
-  {
-    shaders[i]->render(strip);
+    shaders[i]->update(strip, deltaTime);
   }
 }

@@ -1,7 +1,9 @@
 #include "ShaderBreathing.h"
 
-void ShaderBreathing::render(Strip *strip)
+void ShaderBreathing::update(Strip *strip, float deltaTime)
 {
+  LEDShader::update(strip, deltaTime);
+
   float intensity;
   float value;
   float x;

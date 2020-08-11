@@ -4,19 +4,9 @@ LEDShader::LEDShader()
 {
 }
 
-void LEDShader::update(float deltaTime)
+void LEDShader::update(Strip *strip, float deltaTime)
 {
   position += deltaTime * speed;
-}
-
-void LEDShader::render(Strip *strip)
-{
-  // float hue;
-  // for (int i = 0; i < this->numPixels; i++)
-  // {
-  //   hue = (float)i / (float)this->numPixels + position;
-  //   leds[i] = CHSV(hue * 255, 255, 255);
-  // }
 }
 
 void LEDShader::blend(CRGB *leds, int ledInx, CRGB color)

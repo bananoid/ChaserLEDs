@@ -31,8 +31,7 @@ public:
   BlendingMode blendingMode = NORMAL;
 
   LEDShader();
-  virtual void update(float deltaTime);
-  virtual void render(Strip *strip);
+  virtual void update(Strip *strip, float deltaTime);
   virtual void blend(CRGB *leds, int ledInx, CRGB color);
 };
 

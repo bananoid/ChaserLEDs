@@ -7,7 +7,7 @@ class ChaserShader : public LEDShader
 {
 public:
   ChaserShader() : LEDShader(){};
-  void render(Strip *strip) override;
+  void update(Strip *strip, float delataTime) override;
 };
 
 #endif
