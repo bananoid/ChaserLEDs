@@ -5,11 +5,11 @@
 #include <FastLED.h>
 
 #include "LEDShader.h"
-#include "ChaserShader.h"
+
 #include "Strip.h"
 #include "Layer.h"
 
-#define MAX_LAYER_COUNT 2
+#define MAX_LAYER_COUNT 3
 
 class Composition
 {
