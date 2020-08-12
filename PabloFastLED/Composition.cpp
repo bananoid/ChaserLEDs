@@ -5,36 +5,18 @@
 
 Composition::Composition()
 {
+  shaders = new LinkedList<LEDShader *>();
+}
 
-  shaders[0] = new ShaderBreathing();
-  shaders[0]->blendingMode = BACKGROUND;
-  shaders[0]->brightness = 255;
-  shaders[0]->scale = 0.2;
-  shaders[0]->speed = -2.3;
-  shaders[0]->hue = 20;
-  shaders[0]->density = 0.0;
-
-  shaders[1] = new ChaserShader();
-  shaders[1]->blendingMode = NORMAL;
-  shaders[1]->brightness = 255;
-  shaders[1]->scale = 0.7;
-  shaders[1]->speed = 2.1;
-  shaders[1]->hue = 0;
-  shaders[1]->density = 0.3;
-
-  shaders[2] = new ShaderBreathing();
-  shaders[2]->blendingMode = NORMAL;
-  shaders[2]->brightness = 255;
-  shaders[2]->scale = 0.003;
-  shaders[2]->speed = -30;
-  shaders[2]->hue = 150;
-  shaders[2]->density = 0.0;
+void Composition::addShader(LEDShader *shader)
+{
+  shaders->add(shader);
 }
 
 void Composition::update(Strip *strip, float deltaTime)
 {
-  for (int i = 0; i < NUM_SHADER_PER_COMPISITION; i++)
+  for (int i = 0; i < shaders->size(); i++)
   {
-    shaders[i]->update(strip, deltaTime);
+    shaders->get(i)->update(strip, deltaTime);
   }
 }

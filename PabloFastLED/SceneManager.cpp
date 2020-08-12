@@ -1,5 +1,7 @@
 #include "SceneManager.h"
 
+#include "Compositions/Vein.h"
+
 SceneManager::SceneManager(CRGB *leds)
 {
   for (int i = 0; i < NUM_STRIPS; i++)
@@ -10,7 +12,7 @@ SceneManager::SceneManager(CRGB *leds)
     strips[i]->startInx = NUM_LEDS_PER_STRIP * i;
   }
 
-  compositions[0] = new Composition();
+  compositions[0] = new Vein();
 }
 
 void SceneManager::update(float deltaTime)
