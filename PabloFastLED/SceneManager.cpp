@@ -4,6 +4,8 @@
 
 SceneManager::SceneManager(CRGB *leds)
 {
+  scenes = LinkedList<Scene *>();
+
   for (int i = 0; i < NUM_STRIPS; i++)
   {
     strips[i] = new Strip();
@@ -12,13 +14,20 @@ SceneManager::SceneManager(CRGB *leds)
     strips[i]->startInx = NUM_LEDS_PER_STRIP * i;
   }
 
-  compositions[0] = new Vein();
+  Composition *compVein = new Vein();
+
+  Scene *scene;
+
+  scene = new Scene(strips);
+  scene->addComposition(compVein);
+  scene->addComposition(compVein);
+  scene->addComposition(compVein);
+  scenes.add(scene);
+
+  currentScene = scene;
 }
 
 void SceneManager::update(float deltaTime)
 {
-  for (int stripInx = 0; stripInx < NUM_STRIPS; stripInx++)
-  {
-    compositions[0]->update(strips[stripInx], deltaTime);
-  }
+  currentScene->update(deltaTime);
 }

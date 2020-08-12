@@ -3,7 +3,10 @@
 
 #include "config.h"
 
+#include <LinkedList.h>
+
 #include "Composition.h"
+#include "Scene.h"
 #include "Strip.h"
 
 class SceneManager
@@ -11,7 +14,8 @@ class SceneManager
 private:
 public:
   Strip *strips[NUM_STRIPS];
-  Composition *compositions[NUM_COMPOSITION];
+  LinkedList<Scene *> scenes;
+  Scene *currentScene;
   SceneManager(CRGB *leds);
   virtual void update(float deltaTime);
 };
