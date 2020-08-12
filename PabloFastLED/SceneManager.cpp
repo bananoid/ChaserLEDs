@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 
 #include "Compositions/Vein.h"
+#include "Compositions/Rain.h"
 
 SceneManager::SceneManager(CRGB *leds)
 {
@@ -15,12 +16,12 @@ SceneManager::SceneManager(CRGB *leds)
   }
 
   Composition *compVein = new Vein();
+  Composition *compRain = new Rain();
 
   Scene *scene;
 
   scene = new Scene(strips);
-  scene->addComposition(compVein);
-  scene->addComposition(compVein);
+  scene->addComposition(compRain);
   scene->addComposition(compVein);
   scenes.add(scene);
 
