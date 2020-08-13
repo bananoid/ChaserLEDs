@@ -8,8 +8,9 @@
 #include "Composition.h"
 #include "Scene.h"
 #include "Strip.h"
+#include "Clock.h"
 
-class SceneManager
+class SceneManager : public ClockDelegate
 {
 private:
 public:
@@ -18,6 +19,7 @@ public:
   Scene *currentScene;
   SceneManager(CRGB *leds);
   virtual void update(float deltaTime);
+  void clockTick(Clock *clock) override;
 };
 
 #endif

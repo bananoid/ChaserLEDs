@@ -3,6 +3,7 @@
 #include <FastLED.h>
 
 #include "SceneManager.h"
+#include "Clock.h"
 
 CRGB leds[NUM_STRIPS * NUM_LEDS_PER_STRIP];
 
@@ -36,6 +37,9 @@ void setup()
   clearAll();
 
   sceneManager = new SceneManager(leds);
+
+  MasterClock.delegate = sceneManager;
+  MasterClock.begin();
 
   // frameTimer.begin(drawFrame, 1000000 / 30);
 }
