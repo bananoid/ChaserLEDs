@@ -38,6 +38,7 @@ void setup()
 
   sceneManager = new SceneManager(leds);
 
+  MasterClock.delegate = sceneManager;
   MasterClock.begin();
 
   // frameTimer.begin(drawFrame, 1000000 / 30);

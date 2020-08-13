@@ -33,3 +33,11 @@ void SceneManager::update(float deltaTime)
 {
   currentScene->update(deltaTime);
 }
+
+void SceneManager::clockTick(Clock *clock)
+{
+  if (clock->ticksBeatCount == 0)
+  {
+    currentScene->nextStep();
+  }
+}

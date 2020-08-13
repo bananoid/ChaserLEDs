@@ -12,6 +12,8 @@ Clock::Clock()
 
   lastTapTime = 0;
   tapCount = 0;
+
+  delegate = NULL;
 }
 
 void Clock::begin()
@@ -90,6 +92,11 @@ void Clock::tick()
   if (ticksBeatCount >= TICK_PER_BEAT)
   {
     ticksBeatCount = 0;
+  }
+
+  if (delegate)
+  {
+    delegate->clockTick(this);
   }
 }
 

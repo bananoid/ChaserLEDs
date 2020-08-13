@@ -13,9 +13,12 @@
 #define CLOCK_LED_PIN 13
 #define CLOCK_TAP_PIN 3
 
+class Clock;
+
 class ClockDelegate
 {
-  virtual void clockTick();
+public:
+  virtual void clockTick(Clock *clock);
 };
 
 class Clock
@@ -23,14 +26,14 @@ class Clock
 private:
   IntervalTimer timer;
   long beatTime; // Time in microseconds
-  unsigned long ticksCount;
-  int ticksBeatCount;
 
   unsigned long firstTapTime;
   unsigned long lastTapTime;
   int tapCount;
 
 public:
+  unsigned long ticksCount;
+  int ticksBeatCount;
   ClockDelegate *delegate;
   Clock();
   virtual void begin();

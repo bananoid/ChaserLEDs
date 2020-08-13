@@ -19,7 +19,7 @@ void Scene::update(float deltaTime)
   int compInx;
   for (int i = 0; i < NUM_STRIPS; i++)
   {
-    compInx = stripsToComp[i];
+    compInx = stripsToComp[i] % compositions.size();
     compositions.get(compInx)->update(strips[i], deltaTime);
   }
 }
