@@ -1,33 +1,87 @@
 #include "Clock.h"
 
+#include <Arduino.h>
+
 static void tick_outer();
+static void tap_outer();
 
 Clock::Clock()
 {
   ticksCount = 0;
-  lastTapTime = 0;
   beatTime = DEFAULT_BEAT_TIME;
+
+  lastTapTime = 0;
+  tapCount = 0;
 }
 
 void Clock::begin()
 {
   pinMode(CLOCK_LED_PIN, OUTPUT);
+  pinMode(CLOCK_TAP_PIN, INPUT_PULLUP);
+  attachInterrupt(CLOCK_TAP_PIN, tap_outer, FALLING);
+
   setClockSpeed(DEFAULT_BEAT_TIME);
 }
 
 void Clock::tap()
 {
+  unsigned long curTime = micros();
+
+  long deltaTapTime = curTime - lastTapTime;
+
+  if (deltaTapTime > TAP_TIME_OUT)
+  {
+    tapCount = 0;
+  }
+
+  if (deltaTapTime < TAP_DEBOUNCE_TIME)
+  {
+    return;
+  }
+
+  if (tapCount == 0)
+  {
+    firstTapTime = curTime;
+  }
+
+  lastTapTime = curTime;
+  tapCount++;
+
+  if (tapCount >= TAP_MAX_COUNT)
+  {
+    long bT = (lastTapTime - firstTapTime) / (TAP_MAX_COUNT - 1);
+    ticksBeatCount = 0;
+    ticksCount = 0;
+    tapCount = 0;
+    setClockSpeed(bT);
+  }
+
+  digitalWrite(CLOCK_LED_PIN, true);
+  delay(10);
+  digitalWrite(CLOCK_LED_PIN, false);
 }
 
 void Clock::tick()
 {
-  if (ticksBeatCount == 0)
+
+  long deltaTapTime = micros() - lastTapTime;
+
+  if (deltaTapTime > TAP_TIME_OUT)
   {
-    digitalWrite(CLOCK_LED_PIN, true);
+    tapCount = 0;
   }
-  else
+
+  if (tapCount == 0)
   {
-    digitalWrite(CLOCK_LED_PIN, false);
+
+    if (ticksBeatCount == 0)
+    {
+      digitalWrite(CLOCK_LED_PIN, true);
+    }
+    else
+    {
+      digitalWrite(CLOCK_LED_PIN, false);
+    }
   }
 
   ticksBeatCount++;
@@ -50,4 +104,9 @@ Clock MasterClock;
 static void tick_outer()
 {
   MasterClock.tick();
+}
+
+static void tap_outer()
+{
+  MasterClock.tap();
 }

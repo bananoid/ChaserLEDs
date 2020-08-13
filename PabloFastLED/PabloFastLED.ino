@@ -12,7 +12,6 @@ CRGB leds[NUM_STRIPS * NUM_LEDS_PER_STRIP];
 float deltaTime = 0;
 
 SceneManager *sceneManager;
-Clock clock = Clock();
 
 void clearAll()
 {
@@ -39,7 +38,7 @@ void setup()
 
   sceneManager = new SceneManager(leds);
 
-  clock.begin();
+  MasterClock.begin();
 
   // frameTimer.begin(drawFrame, 1000000 / 30);
 }
