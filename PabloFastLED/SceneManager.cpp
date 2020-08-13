@@ -23,6 +23,7 @@ SceneManager::SceneManager(CRGB *leds)
   scene = new Scene(strips);
   scene->addComposition(compRain);
   scene->addComposition(compVein);
+  scene->nextStep();
   scenes.add(scene);
 
   currentScene = scene;
