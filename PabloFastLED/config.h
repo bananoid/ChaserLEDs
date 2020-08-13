@@ -1,0 +1,3 @@
+#define NUM_LEDS_PER_STRIP 300
+#define NUM_STRIPS 7
+#define NUM_COMPOSITION 3

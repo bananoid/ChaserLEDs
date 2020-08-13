@@ -19,20 +19,16 @@ class LEDShader
 private:
 public:
   float position = 0;
-  float speed = 1;
-
-  float density = 1;
-  float scale = 1;
-
-  float brightness = 255;
-  float saturation = 255;
-  float hue = 255;
-
   BlendingMode blendingMode = NORMAL;
+  float scale = 1;
+  float speed = 1;
+  float density = 1;
+  float hue = 255;
+  float saturation = 255;
+  float brightness = 255;
 
   LEDShader();
-  virtual void update(float deltaTime);
-  virtual void render(Strip *strip);
+  virtual void update(Strip *strip, float deltaTime);
   virtual void blend(CRGB *leds, int ledInx, CRGB color);
 };
 

@@ -1,7 +1,9 @@
 #include "ChaserShader.h"
 
-void ChaserShader::render(Strip *strip)
+void ChaserShader::update(Strip *strip, float deltaTime)
 {
+  LEDShader::update(strip, deltaTime);
+
   float intensity;
   float value;
   float x;

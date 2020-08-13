@@ -1,22 +1,24 @@
 #ifndef COMPOSITION_H
 #define COMPOSITION_H
 
+#include "config.h"
+
 #include <Arduino.h>
 #include <FastLED.h>
+#include <LinkedList.h>
 
 #include "Strip.h"
 #include "LEDShader.h"
-
-#define MAX_SHADERS_COUNT 3
 
 class Composition
 {
 private:
 public:
-  LEDShader *shaders[MAX_SHADERS_COUNT];
+  // LEDShader *shaders[NUM_SHADER_PER_COMPISITION];
+  LinkedList<LEDShader *> *shaders;
   Composition();
-  virtual void update(float deltaTime);
-  virtual void render(Strip *strip);
+  virtual void addShader(LEDShader *shader);
+  virtual void update(Strip *strip, float deltaTime);
 };
 
 #endif
