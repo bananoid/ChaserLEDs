@@ -27,12 +27,12 @@ void Scene::update(float deltaTime)
 
 void Scene::nextStep()
 {
-  if (stepCount % (32 * 16) == 0)
+  if (stepCount % (32 * 32) == 0)
   {
     randomize();
   }
 
-  if (stepCount % (32 / 4) == 0)
+  if (stepCount % (32 * 1) == 0)
   {
     shiftFW();
     mirror();
@@ -71,7 +71,7 @@ void Scene::shiftFW()
 void Scene::shiftBW()
 {
   int temp = stripsToComp[0];
-  for (i = 0; i < NUM_STRIPS - 1; i++)
+  for (int i = 0; i < NUM_STRIPS - 1; i++)
   {
     stripsToComp[i] = stripsToComp[i + 1];
   }

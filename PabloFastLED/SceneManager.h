@@ -13,6 +13,8 @@
 class SceneManager : public ClockDelegate
 {
 private:
+  LinkedList<Composition *> allCompositions;
+
 public:
   Strip *strips[NUM_STRIPS];
   LinkedList<Scene *> scenes;
@@ -20,6 +22,7 @@ public:
   SceneManager(CRGB *leds);
   virtual void update(float deltaTime);
   void clockTick(Clock *clock) override;
+  Scene *createRandomScene();
 };
 
 #endif
