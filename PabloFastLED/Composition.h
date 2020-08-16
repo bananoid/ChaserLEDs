@@ -13,8 +13,9 @@
 class Composition
 {
 private:
+  float hueOffset;
+
 public:
-  // LEDShader *shaders[NUM_SHADER_PER_COMPISITION];
   LinkedList<LEDShader *> *shaders;
   Composition();
   virtual void addShader(LEDShader *shader);

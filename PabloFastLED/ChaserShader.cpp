@@ -16,7 +16,7 @@ void ChaserShader::update(Strip *strip, float deltaTime)
     intensity = GFXUtils::chaserNoiseSmooth(x, density);
 
     value = intensity * brightness;
-    color = CHSV(hue, saturation, value);
+    color = CHSV(hueWithOffset, saturation, value);
 
     blend(strip->leds, i, color);
   }

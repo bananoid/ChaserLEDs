@@ -7,6 +7,8 @@ LEDShader::LEDShader()
 void LEDShader::update(Strip *strip, float deltaTime)
 {
   position += deltaTime * speed;
+
+  hueWithOffset = hue + hueOffset;
 }
 
 void LEDShader::blend(CRGB *leds, int ledInx, CRGB color)

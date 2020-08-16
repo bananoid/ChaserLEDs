@@ -17,7 +17,7 @@ void ShaderBreathing::update(Strip *strip, float deltaTime)
     intensity = intensity * (1.0 - density) + density;
 
     value = intensity * brightness;
-    color = CHSV(hue, saturation, value);
+    color = CHSV(hueWithOffset, saturation, value);
 
     blend(strip->leds, i, color);
   }
