@@ -26,7 +26,10 @@ void Scene::update(float deltaTime)
 
     compInx = stripsToComp[i] % compositions.size();
     comp = compositions.get(compInx);
+
+    comp->speedOffset = speedOffset;
     comp->hueOffset = hueOffset;
+
     comp->update(strips[i], deltaTime);
   }
 }
@@ -40,6 +43,7 @@ void Scene::nextStep()
 
   if (stepCount % (32 * 1) == 0)
   {
+    speedOffset = random(-1000, 1000) / 100.0;
     shiftFW();
     mirror();
   }

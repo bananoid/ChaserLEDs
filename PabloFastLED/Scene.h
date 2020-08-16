@@ -20,6 +20,8 @@ public:
   LinkedList<Composition *> compositions;
   Strip **strips;
   Scene(Strip **strips);
+
+  float speedOffset = 1;
   float hueOffset = 0;
 
   virtual void addComposition(Composition *composition);

@@ -6,7 +6,7 @@ LEDShader::LEDShader()
 
 void LEDShader::update(Strip *strip, float deltaTime)
 {
-  position += deltaTime * speed;
+  position += deltaTime * speed * speedOffset;
 
   hueWithOffset = hue + hueOffset;
 }

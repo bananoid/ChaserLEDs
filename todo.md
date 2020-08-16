@@ -1,5 +1,5 @@
-[] Composition hue offset
-[] Composition speed offset
+[x] Composition hue offset
+[x] Composition speed offset
 [] Abstract Scene to use a descriptor for the animation
 [] Saw shader
 [] Make more compositions
@@ -11,3 +11,4 @@
   [] random Scene
   [] random Scene sequencer (Scene Manager)
 [] UV ligth control
+[] Ring buffer shader

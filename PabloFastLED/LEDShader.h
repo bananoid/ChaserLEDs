@@ -22,6 +22,7 @@ public:
   BlendingMode blendingMode = NORMAL;
   float scale = 1;
   float speed = 1;
+  float speedOffset = 1;
   float density = 1;
   float hue = 255;
   float hueOffset = 0;
