@@ -9,6 +9,21 @@
 #include "Strip.h"
 #include "Clock.h"
 
+enum SceneOperationType
+{
+  Sorted,
+  Random,
+  ShiftFW,
+  ShiftBW,
+  Mirror
+};
+
+struct SceneOperation
+{
+  SceneOperationType type = Sorted;
+  int frequency = 32;
+};
+
 class Scene
 {
 private:
@@ -18,6 +33,7 @@ private:
 public:
   int stepCount = 0;
   LinkedList<Composition *> compositions;
+  LinkedList<SceneOperationType> operations;
   Strip **strips;
   Scene(Strip **strips);
 

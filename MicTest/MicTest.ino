@@ -9,7 +9,7 @@ float filterAudio = 0;
 
 void loop()
 {
-  int val = analogRead(A8) / 7; // A9 = pin 23
+  int val = analogRead(A9) / 7; // A9 = pin 23
 
   filterAudio += (val - filterAudio) * 0.01;
   analogWrite(13, filterAudio);

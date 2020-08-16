@@ -22,13 +22,11 @@ void Scene::update(float deltaTime)
 
   for (int i = 0; i < NUM_STRIPS; i++)
   {
-    hueOffset += deltaTime * 0.01;
-
     compInx = stripsToComp[i] % compositions.size();
     comp = compositions.get(compInx);
 
     comp->speedOffset = speedOffset;
-    comp->hueOffset = hueOffset;
+    // comp->hueOffset = hueOffset;
 
     comp->update(strips[i], deltaTime);
   }
@@ -47,6 +45,11 @@ void Scene::nextStep()
     shiftFW();
     mirror();
   }
+
+  // for (int i = 0; i < count; i++)
+  // {
+  //   /* code */
+  // }
 
   stepCount++;
 }

@@ -46,9 +46,14 @@ void SceneManager::update(float deltaTime)
 
 void SceneManager::clockTick(Clock *clock)
 {
+  // if (MainClock.ticksCount % 32 == 0)
+  // {
+  //   currentScene = createRandomScene();
+  // }
+
   currentScene->nextStep();
 }
 
-Scene *SceneManager::createRandomScene()
+static Scene *SceneManager::createRandomScene()
 {
 }

@@ -16,13 +16,14 @@ private:
   LinkedList<Composition *> allCompositions;
 
 public:
+  int stepCount = 0;
   Strip *strips[NUM_STRIPS];
   LinkedList<Scene *> scenes;
   Scene *currentScene;
   SceneManager(CRGB *leds);
   virtual void update(float deltaTime);
   void clockTick(Clock *clock) override;
-  Scene *createRandomScene();
+  static Scene *createRandomScene();
 };
 
 #endif
