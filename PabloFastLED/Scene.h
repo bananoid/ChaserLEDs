@@ -20,6 +20,8 @@ public:
   LinkedList<Composition *> compositions;
   Strip **strips;
   Scene(Strip **strips);
+  float hueOffset = 0;
+
   virtual void addComposition(Composition *composition);
   virtual void nextStep();
   virtual void update(float deltaTime);

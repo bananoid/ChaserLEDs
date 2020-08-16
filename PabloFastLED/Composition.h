@@ -13,11 +13,10 @@
 class Composition
 {
 private:
-  float hueOffset;
-
 public:
   LinkedList<LEDShader *> *shaders;
   Composition();
+  float hueOffset = 0;
   virtual void addShader(LEDShader *shader);
   virtual void update(Strip *strip, float deltaTime);
 };

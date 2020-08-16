@@ -18,10 +18,16 @@ void Scene::addComposition(Composition *composition)
 void Scene::update(float deltaTime)
 {
   int compInx;
+  Composition *comp;
+
   for (int i = 0; i < NUM_STRIPS; i++)
   {
+    hueOffset += deltaTime * 0.01;
+
     compInx = stripsToComp[i] % compositions.size();
-    compositions.get(compInx)->update(strips[i], deltaTime);
+    comp = compositions.get(compInx);
+    comp->hueOffset = hueOffset;
+    comp->update(strips[i], deltaTime);
   }
 }
 
@@ -53,8 +59,8 @@ void Scene::randomize()
 {
   for (int i = 0; i < NUM_STRIPS; i++)
   {
-    // stripsToComp[i] = random(compositions.size());
-    stripsToComp[i] = i % compositions.size();
+    stripsToComp[i] = random(compositions.size());
+    // stripsToComp[i] = i % compositions.size();
   }
 }
 

@@ -15,8 +15,11 @@ void Composition::addShader(LEDShader *shader)
 
 void Composition::update(Strip *strip, float deltaTime)
 {
+  LEDShader *shader;
   for (int i = 0; i < shaders->size(); i++)
   {
-    shaders->get(i)->update(strip, deltaTime);
+    shader = shaders->get(i);
+    shader->hueOffset = hueOffset;
+    shader->update(strip, deltaTime);
   }
 }

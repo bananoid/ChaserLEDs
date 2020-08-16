@@ -13,7 +13,7 @@ void ChaserShader::update(Strip *strip, float deltaTime)
 
     x = this->position + i * scale;
 
-    intensity = GFXUtils::chaserNoiseSmooth(x, density);
+    intensity = GFXUtils::chaserNoise(x, density);
 
     value = intensity * brightness;
     color = CHSV(hueWithOffset, saturation, value);
