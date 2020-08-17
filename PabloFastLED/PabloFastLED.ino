@@ -60,5 +60,5 @@ void drawFrame()
   LEDS.show();
 
   deltaTime = millis() - time;
-  Serial.println(deltaTime);
+  // Serial.println(deltaTime);
 }

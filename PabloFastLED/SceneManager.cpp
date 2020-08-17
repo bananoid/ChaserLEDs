@@ -21,21 +21,6 @@ SceneManager::SceneManager(CRGB *leds)
   allCompositions.add(new Vein());
   allCompositions.add(new Rain());
 
-  // Build Scenes
-
-  // Composition *compVein = new Vein();
-  // Composition *compRain = new Rain();
-
-  // scenes = LinkedList<Scene *>();
-  // Scene *scene;
-
-  // scene = new Scene(strips);
-  // scene->addComposition(compRain);
-  // scene->addComposition(compVein);
-
-  // scene->nextStep();
-  // scenes.add(scene);
-
   currentScene = createRandomScene();
 }
 
@@ -50,13 +35,12 @@ void SceneManager::update(float deltaTime)
 
 void SceneManager::clockTick(Clock *clock)
 {
-
   if (MasterClock.ticksCount % TICK_PER_BEAT * 4 == 0)
   {
-    // if (currentScene != NULL)
-    // {
-    //   delete currentScene;
-    // }
+    if (currentScene != NULL)
+    {
+      delete currentScene;
+    }
 
     currentScene = createRandomScene();
   }
@@ -73,10 +57,23 @@ Scene *SceneManager::createRandomScene()
 {
   Scene *scene = new Scene(strips);
 
-  // Add Compositions
-  // scene->addComposition(allCompositions.get(0));
-  // scene->addComposition(allCompositions.get(1));
+  //Add Compositions
+  scene->addComposition(allCompositions.get(0));
+  scene->addComposition(allCompositions.get(1));
+  scene->addComposition(allCompositions.get(1));
+  scene->addComposition(allCompositions.get(1));
+  scene->addComposition(allCompositions.get(1));
+  scene->addComposition(allCompositions.get(1));
+  scene->addComposition(allCompositions.get(1));
+  scene->addComposition(allCompositions.get(1));
+
+  //Apply initial operations
+  // scene->applyOperation(SOP_Sorted);
+  scene->applyOperation(SOP_Random);
+
+  // Set Timeline Operations
+  scene->addTimelineOperation(3, SOP_RandomSpeed);
+  scene->addTimelineOperation(4, SOP_ShiftBW);
 
   return scene;
-  // return NULL;
 }

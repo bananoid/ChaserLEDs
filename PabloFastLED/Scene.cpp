@@ -2,12 +2,17 @@
 
 #include <Arduino.h>
 #include "GFXUtils.h"
+#include <Arduino.h>
 
 Scene::Scene(Strip **strips)
 {
-  animationSteps = 2;
-  compositions = new LinkedList<Composition *>();
+  compositions = LinkedList<Composition *>();
   this->strips = strips;
+
+  for (int i = 0; i < OPERATION_TIME_MAX_EXP_DIVIDER; i++)
+  {
+    timelineOperations[i] = new LinkedList<SceneOperationType>();
+  }
 }
 
 Scene::~Scene()
@@ -16,30 +21,53 @@ Scene::~Scene()
 
 void Scene::addComposition(Composition *composition)
 {
-  compositions->add(composition);
+  compositions.add(composition);
+}
+
+void Scene::applyOperation(SceneOperationType op)
+{
+  switch (op)
+  {
+  case SOP_Sorted:
+    opSort();
+    break;
+  case SOP_Random:
+    opRandomize();
+    break;
+  case SOP_ShiftFW:
+    opShiftFW();
+    break;
+  case SOP_ShiftBW:
+    opShiftBW();
+    break;
+  case SOP_Mirror:
+    opMirror();
+    break;
+  case SOP_RandomSpeed:
+    opRandomSpeed();
+    break;
+  default:
+    break;
+  }
 }
 
 void Scene::addTimelineOperation(int division, SceneOperationType operation)
 {
+  timelineOperations[division]->add(operation);
 }
 
 void Scene::update(float deltaTime)
 {
-  if (compositions == NULL)
-  {
-    return;
-  }
-
   int compInx;
   Composition *comp;
 
   for (int i = 0; i < NUM_STRIPS; i++)
   {
-    compInx = stripsToComp[i] % compositions->size();
-    comp = compositions->get(compInx);
+    compInx = stripsToComp[i] % compositions.size();
+    comp = compositions.get(compInx);
 
     comp->speedOffset = speedOffset;
-    // comp->hueOffset = hueOffset;
+    comp->hueOffset = hueOffset;
 
     comp->update(strips[i], deltaTime);
   }
@@ -47,45 +75,45 @@ void Scene::update(float deltaTime)
 
 void Scene::nextStep()
 {
-  // if (stepCount % (32 * 32) == 0)
-  // {
-  //   randomize();
-  // }
+  LinkedList<SceneOperationType> *ops;
+  SceneOperationType opType;
+  long ticksCount = MasterClock.ticksCount;
 
-  // if (stepCount % (32 * 1) == 0)
-  // {
-  //   speedOffset = random(-1000, 1000) / 100.0;
-  //   shiftFW();
-  //   mirror();
-  // }
+  int div;
 
   for (int i = 0; i < OPERATION_TIME_MAX_EXP_DIVIDER; i++)
   {
-    // if (((int)powf(2, i)) % MasterClock.ticksCount == 0)
-    // {
-    //   // operations[i]
-    // }
+    div = ((int)powf(2, i));
+
+    if (ticksCount % div == 0)
+    {
+      ops = timelineOperations[i];
+      for (int j = 0; j < ops->size(); j++)
+      {
+        opType = ops->get(j);
+        applyOperation(opType);
+      }
+    }
   }
 }
 
-// speed = R[0-1]; animationSteps = N[ ..., 32, 16, 8, 4, 2, 1]
-void Scene::setAnimationSpeed(float speed)
-{
-  int expVal = (1 - speed) * 8; // max division is 8 = 2^8 = 256
-  animationSteps = powf(2, expVal);
-  animationSteps = max(animationSteps, 1);
-}
-
-void Scene::randomize()
+void Scene::opSort()
 {
   for (int i = 0; i < NUM_STRIPS; i++)
   {
-    stripsToComp[i] = random(compositions->size());
-    // stripsToComp[i] = i % compositions->size();
+    stripsToComp[i] = i % compositions.size();
   }
 }
 
-void Scene::shiftFW()
+void Scene::opRandomize()
+{
+  for (int i = 0; i < NUM_STRIPS; i++)
+  {
+    stripsToComp[i] = random(compositions.size());
+  }
+}
+
+void Scene::opShiftFW()
 {
   int temp = stripsToComp[NUM_STRIPS - 1];
   for (int i = NUM_STRIPS - 1; i >= 0; i--)
@@ -95,7 +123,7 @@ void Scene::shiftFW()
   stripsToComp[0] = temp;
 }
 
-void Scene::shiftBW()
+void Scene::opShiftBW()
 {
   int temp = stripsToComp[0];
   for (int i = 0; i < NUM_STRIPS - 1; i++)
@@ -105,7 +133,13 @@ void Scene::shiftBW()
   stripsToComp[NUM_STRIPS - 1] = temp;
 }
 
-void Scene::mirror()
+void Scene::opMirror()
 {
   // TODO: do it
+}
+
+void Scene::opRandomSpeed()
+{
+  int dir = random(0, 2) > 0 ? -1 : 1;
+  speedOffset = random(50, 800) / 100.0 * dir;
 }

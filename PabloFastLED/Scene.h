@@ -13,42 +13,44 @@
 
 enum SceneOperationType
 {
-  Sorted,
-  Random,
-  ShiftFW,
-  ShiftBW,
-  Mirror
+  SOP_Sorted,
+  SOP_Random,
+  SOP_ShiftFW,
+  SOP_ShiftBW,
+  SOP_Mirror,
+  SOP_RandomSpeed
 };
 
 class Scene
 {
 private:
   int stripsToComp[NUM_STRIPS];
-  int animationSteps;
 
 public:
-  int stepCount = 0;
-  LinkedList<Composition *> *compositions;
   Strip **strips;
-  Scene(Strip **strips);
-  virtual ~Scene();
-
-  // LinkedList<SceneOperationType>
-  int timelineOperation[OPERATION_TIME_MAX_EXP_DIVIDER];
+  LinkedList<Composition *> compositions;
+  LinkedList<SceneOperationType> *timelineOperations[OPERATION_TIME_MAX_EXP_DIVIDER];
 
   float speedOffset = 1;
   float hueOffset = 0;
 
+  Scene(Strip **strips);
+  virtual ~Scene();
+
   virtual void addComposition(Composition *composition);
+  virtual void applyOperation(SceneOperationType operation);
   virtual void addTimelineOperation(int division, SceneOperationType operation);
 
   virtual void nextStep();
   virtual void update(float deltaTime);
-  virtual void setAnimationSpeed(float speed);
-  virtual void randomize();
-  virtual void shiftFW();
-  virtual void shiftBW();
-  virtual void mirror();
+
+  // Operations
+  virtual void opSort();
+  virtual void opRandomize();
+  virtual void opShiftFW();
+  virtual void opShiftBW();
+  virtual void opMirror();
+  virtual void opRandomSpeed();
 };
 
 #endif
