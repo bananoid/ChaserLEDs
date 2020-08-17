@@ -1,4 +1,5 @@
 #include "LEDShader.h"
+#include <Arduino.h>
 
 LEDShader::LEDShader()
 {
@@ -22,14 +23,14 @@ void LEDShader::blend(CRGB *leds, int ledInx, CRGB color)
     leds[ledInx] = GFXUtils::alphaBlend(leds[ledInx], color);
     break;
   case ADD:
-    leds[ledInx].r += color.r;
-    leds[ledInx].g += color.g;
-    leds[ledInx].b += color.b;
+    leds[ledInx].r = min((float)leds[ledInx].r + (float)color.r, 255);
+    leds[ledInx].g = min((float)leds[ledInx].g + (float)color.g, 255);
+    leds[ledInx].b = min((float)leds[ledInx].b + (float)color.b, 255);
     break;
   case MULTIPLY:
-    leds[ledInx].r *= color.r;
-    leds[ledInx].g *= color.g;
-    leds[ledInx].b *= color.b;
+    leds[ledInx].r *= color.r / 255.0;
+    leds[ledInx].g *= color.g / 255.0;
+    leds[ledInx].b *= color.b / 255.0;
     break;
 
   default:
