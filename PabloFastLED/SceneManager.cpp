@@ -2,6 +2,7 @@
 
 #include "Compositions/Vein.h"
 #include "Compositions/Rain.h"
+#include "Compositions/SimpleColor.h"
 
 SceneManager::SceneManager(CRGB *leds)
 {
@@ -18,6 +19,12 @@ SceneManager::SceneManager(CRGB *leds)
   // Initialize Compositon
 
   allCompositions = LinkedList<Composition *>();
+  allCompositions.add(new SimpleColor(CHSV(0, 255, 255)));
+  allCompositions.add(new SimpleColor(CHSV(0, 100, 255)));
+  allCompositions.add(new SimpleColor(CHSV(100, 255, 255)));
+  allCompositions.add(new SimpleColor(CHSV(100, 100, 255)));
+  allCompositions.add(new SimpleColor(CHSV(200, 255, 255)));
+  allCompositions.add(new SimpleColor(CHSV(200, 100, 255)));
   allCompositions.add(new Vein());
   allCompositions.add(new Rain());
 
@@ -35,7 +42,7 @@ void SceneManager::update(float deltaTime)
 
 void SceneManager::clockTick(Clock *clock)
 {
-  if (MasterClock.ticksCount % TICK_PER_BEAT * 4 == 0)
+  if (MasterClock.ticksCount % (TICK_PER_BEAT * 256) == 0)
   {
     if (currentScene != NULL)
     {
@@ -64,16 +71,19 @@ Scene *SceneManager::createRandomScene()
   scene->addComposition(allCompositions.get(1));
   scene->addComposition(allCompositions.get(1));
   scene->addComposition(allCompositions.get(1));
-  scene->addComposition(allCompositions.get(1));
-  scene->addComposition(allCompositions.get(1));
 
   //Apply initial operations
-  // scene->applyOperation(SOP_Sorted);
-  scene->applyOperation(SOP_Random);
+  scene->applyOperation(SOP_Sorted);
+  // scene->applyOperation(SOP_Random);
 
   // Set Timeline Operations
-  scene->addTimelineOperation(3, SOP_RandomSpeed);
-  scene->addTimelineOperation(4, SOP_ShiftBW);
+
+  scene->addTimelineOperation(8, SOP_Random);
+  scene->addTimelineOperation(4, SOP_RandomSpeed);
+  scene->addTimelineOperation(2, SOP_ShiftFW);
+  scene->addTimelineOperation(3, SOP_ShiftBW);
+
+  scene->isMirrored = true;
 
   return scene;
 }

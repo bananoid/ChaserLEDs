@@ -17,19 +17,25 @@ enum SceneOperationType
   SOP_Random,
   SOP_ShiftFW,
   SOP_ShiftBW,
-  SOP_Mirror,
   SOP_RandomSpeed
+};
+
+struct StripToComp
+{
+  int map[NUM_STRIPS];
 };
 
 class Scene
 {
 private:
-  int stripsToComp[NUM_STRIPS];
+  StripToComp stripsToComp;
 
 public:
   Strip **strips;
   LinkedList<Composition *> compositions;
   LinkedList<SceneOperationType> *timelineOperations[OPERATION_TIME_MAX_EXP_DIVIDER];
+
+  bool isMirrored = false;
 
   float speedOffset = 1;
   float hueOffset = 0;
@@ -49,8 +55,10 @@ public:
   virtual void opRandomize();
   virtual void opShiftFW();
   virtual void opShiftBW();
-  virtual void opMirror();
   virtual void opRandomSpeed();
+
+  //
+  virtual StripToComp mirror(StripToComp stripsToComp);
 };
 
 #endif
