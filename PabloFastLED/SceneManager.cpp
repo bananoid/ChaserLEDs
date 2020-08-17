@@ -20,7 +20,7 @@ SceneManager::SceneManager(CRGB *leds)
 
   allCompositions = LinkedList<Composition *>();
   allCompositions.add(new SimpleColor(CHSV(0, 255, 255)));
-  allCompositions.add(new SimpleColor(CHSV(0, 100, 255)));
+  allCompositions.add(new SimpleColor(CHSV(0, 0, 255)));
   allCompositions.add(new SimpleColor(CHSV(100, 255, 255)));
   allCompositions.add(new SimpleColor(CHSV(100, 100, 255)));
   allCompositions.add(new SimpleColor(CHSV(200, 255, 255)));
