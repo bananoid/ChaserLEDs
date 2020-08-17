@@ -33,6 +33,7 @@ void setup()
 
   LEDS.setBrightness(255);
   LEDS.setDither(0);
+  LEDS.setMaxPowerInVoltsAndMilliamps(5, 10000);
 
   clearAll();
 
