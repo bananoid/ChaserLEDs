@@ -3,7 +3,7 @@
 
 #include "config.h"
 
-#include <LinkedList.h>
+#include "LinkedList.h"
 
 #include "Composition.h"
 #include "Scene.h"
@@ -23,7 +23,7 @@ public:
   SceneManager(CRGB *leds);
   virtual void update(float deltaTime);
   void clockTick(Clock *clock) override;
-  static Scene *createRandomScene();
+  Scene *createRandomScene();
 };
 
 #endif

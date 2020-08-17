@@ -6,24 +6,37 @@
 Scene::Scene(Strip **strips)
 {
   animationSteps = 2;
-  compositions = LinkedList<Composition *>();
+  compositions = new LinkedList<Composition *>();
   this->strips = strips;
+}
+
+Scene::~Scene()
+{
 }
 
 void Scene::addComposition(Composition *composition)
 {
-  compositions.add(composition);
+  compositions->add(composition);
+}
+
+void Scene::addTimelineOperation(int division, SceneOperationType operation)
+{
 }
 
 void Scene::update(float deltaTime)
 {
+  if (compositions == NULL)
+  {
+    return;
+  }
+
   int compInx;
   Composition *comp;
 
   for (int i = 0; i < NUM_STRIPS; i++)
   {
-    compInx = stripsToComp[i] % compositions.size();
-    comp = compositions.get(compInx);
+    compInx = stripsToComp[i] % compositions->size();
+    comp = compositions->get(compInx);
 
     comp->speedOffset = speedOffset;
     // comp->hueOffset = hueOffset;
@@ -34,24 +47,25 @@ void Scene::update(float deltaTime)
 
 void Scene::nextStep()
 {
-  if (stepCount % (32 * 32) == 0)
-  {
-    randomize();
-  }
-
-  if (stepCount % (32 * 1) == 0)
-  {
-    speedOffset = random(-1000, 1000) / 100.0;
-    shiftFW();
-    mirror();
-  }
-
-  // for (int i = 0; i < count; i++)
+  // if (stepCount % (32 * 32) == 0)
   // {
-  //   /* code */
+  //   randomize();
   // }
 
-  stepCount++;
+  // if (stepCount % (32 * 1) == 0)
+  // {
+  //   speedOffset = random(-1000, 1000) / 100.0;
+  //   shiftFW();
+  //   mirror();
+  // }
+
+  for (int i = 0; i < OPERATION_TIME_MAX_EXP_DIVIDER; i++)
+  {
+    // if (((int)powf(2, i)) % MasterClock.ticksCount == 0)
+    // {
+    //   // operations[i]
+    // }
+  }
 }
 
 // speed = R[0-1]; animationSteps = N[ ..., 32, 16, 8, 4, 2, 1]
@@ -66,8 +80,8 @@ void Scene::randomize()
 {
   for (int i = 0; i < NUM_STRIPS; i++)
   {
-    stripsToComp[i] = random(compositions.size());
-    // stripsToComp[i] = i % compositions.size();
+    stripsToComp[i] = random(compositions->size());
+    // stripsToComp[i] = i % compositions->size();
   }
 }
 

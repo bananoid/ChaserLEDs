@@ -23,37 +23,60 @@ SceneManager::SceneManager(CRGB *leds)
 
   // Build Scenes
 
-  Composition *compVein = new Vein();
-  Composition *compRain = new Rain();
+  // Composition *compVein = new Vein();
+  // Composition *compRain = new Rain();
 
-  scenes = LinkedList<Scene *>();
-  Scene *scene;
+  // scenes = LinkedList<Scene *>();
+  // Scene *scene;
 
-  scene = new Scene(strips);
-  scene->addComposition(compRain);
-  scene->addComposition(compVein);
+  // scene = new Scene(strips);
+  // scene->addComposition(compRain);
+  // scene->addComposition(compVein);
 
-  scene->nextStep();
-  scenes.add(scene);
+  // scene->nextStep();
+  // scenes.add(scene);
 
-  currentScene = scene;
+  currentScene = createRandomScene();
 }
 
 void SceneManager::update(float deltaTime)
 {
+  if (currentScene == NULL)
+  {
+    return;
+  }
   currentScene->update(deltaTime);
 }
 
 void SceneManager::clockTick(Clock *clock)
 {
-  // if (MainClock.ticksCount % 32 == 0)
-  // {
-  //   currentScene = createRandomScene();
-  // }
+
+  if (MasterClock.ticksCount % TICK_PER_BEAT * 4 == 0)
+  {
+    // if (currentScene != NULL)
+    // {
+    //   delete currentScene;
+    // }
+
+    currentScene = createRandomScene();
+  }
+
+  if (currentScene == NULL)
+  {
+    return;
+  }
 
   currentScene->nextStep();
 }
 
-static Scene *SceneManager::createRandomScene()
+Scene *SceneManager::createRandomScene()
 {
+  Scene *scene = new Scene(strips);
+
+  // Add Compositions
+  // scene->addComposition(allCompositions.get(0));
+  // scene->addComposition(allCompositions.get(1));
+
+  return scene;
+  // return NULL;
 }

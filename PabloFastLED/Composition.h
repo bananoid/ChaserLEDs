@@ -5,7 +5,7 @@
 
 #include <Arduino.h>
 #include <FastLED.h>
-#include <LinkedList.h>
+#include "LinkedList.h"
 
 #include "Strip.h"
 #include "LEDShader.h"
