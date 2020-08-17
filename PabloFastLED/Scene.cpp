@@ -140,8 +140,12 @@ void Scene::opShiftBW()
 
 void Scene::opRandomSpeed()
 {
-  int dir = random(0, 2) > 0 ? -1 : 1;
-  speedOffset = random(50, 800) / 100.0 * dir;
+  int dir = random(0, 20) > 0 ? -1 : 1;
+
+  // int fastSpeed = random(0, 20) > 0 ? 0 : 1;
+  // speedOffset = random(100, 1000 + 500 * speedOffset) / 100.0 * dir;
+
+  speedOffset = random(500, 1000) / 100.0 * dir;
 }
 
 StripToComp Scene::mirror(StripToComp stripsToComp)

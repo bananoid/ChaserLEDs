@@ -23,12 +23,8 @@ SceneManager::SceneManager(CRGB *leds)
 
   allCompositions.add(new Test());
 
-  allCompositions.add(new SimpleColor(CHSV(0, 255, 255)));
   allCompositions.add(new SimpleColor(CHSV(0, 0, 255)));
-  allCompositions.add(new SimpleColor(CHSV(100, 255, 255)));
-  allCompositions.add(new SimpleColor(CHSV(100, 100, 255)));
-  allCompositions.add(new SimpleColor(CHSV(200, 255, 255)));
-  allCompositions.add(new SimpleColor(CHSV(200, 100, 255)));
+  allCompositions.add(new SimpleColor(CHSV(0, 255, 255)));
   allCompositions.add(new Vein());
   allCompositions.add(new Rain());
 
@@ -70,8 +66,20 @@ Scene *SceneManager::createRandomScene()
 
   //Add Compositions
   scene->addComposition(allCompositions.get(0));
-  // scene->addComposition(allCompositions.get(0));
-  // scene->addComposition(allCompositions.get(1));
+  scene->addComposition(allCompositions.get(0));
+  scene->addComposition(allCompositions.get(2));
+  scene->addComposition(allCompositions.get(0));
+  scene->addComposition(allCompositions.get(1));
+  scene->addComposition(allCompositions.get(0));
+  scene->addComposition(allCompositions.get(0));
+  scene->addComposition(allCompositions.get(3));
+  scene->addComposition(allCompositions.get(4));
+  scene->addComposition(allCompositions.get(1));
+  scene->addComposition(allCompositions.get(0));
+  scene->addComposition(allCompositions.get(0));
+  scene->addComposition(allCompositions.get(0));
+  scene->addComposition(allCompositions.get(0));
+  scene->addComposition(allCompositions.get(0));
   // scene->addComposition(allCompositions.get(1));
   // scene->addComposition(allCompositions.get(1));
   // scene->addComposition(allCompositions.get(1));
@@ -82,9 +90,9 @@ Scene *SceneManager::createRandomScene()
 
   // Set Timeline Operations
 
-  // scene->addTimelineOperation(8, SOP_Random);
-  // scene->addTimelineOperation(4, SOP_RandomSpeed);
-  // scene->addTimelineOperation(2, SOP_ShiftFW);
+  scene->addTimelineOperation(9, SOP_Random);
+  scene->addTimelineOperation(5, SOP_RandomSpeed);
+  scene->addTimelineOperation(4, SOP_ShiftFW);
   // scene->addTimelineOperation(3, SOP_ShiftBW);
 
   scene->isMirrored = true;

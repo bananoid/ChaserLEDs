@@ -110,10 +110,10 @@ public:
   //              uy);
   // }
 
-  // static float snoise(float x)
-  // {
-  //   return (sinf(2.0 * x) + sinf(PI * x)) * 0.5 + 0.5;
-  // }
+  static float snoise(float x)
+  {
+    return (sinf(2.0 * x) + sinf(PI * x)) * 0.5 + 0.5;
+  }
 };
 
 #endif

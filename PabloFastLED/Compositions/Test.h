@@ -6,6 +6,7 @@
 #include "../Shaders/ChaserShader.h"
 #include "../Shaders/ShaderBreathing.h"
 #include "../Shaders/ShaderFM.h"
+#include "../Shaders/ShaderSawFM.h"
 
 class Test : public Composition
 {
@@ -14,22 +15,22 @@ public:
   {
     LEDShader *shader;
 
-    shader = new ShaderFM();
+    shader = new ShaderSawFM();
     shader->blendingMode = BACKGROUND;
-    shader->scale = 0.06;
-    shader->speed = 10.0;
-    shader->density = 1;
-    shader->hue = 5;
+    shader->scale = 1.0;
+    shader->speed = 1.0;
+    shader->density = 0.0;
+    shader->hue = 180;
     shader->saturation = 255;
     shader->brightness = 255;
     addShader(shader);
 
     shader = new ShaderFM();
     shader->blendingMode = ADD;
-    shader->scale = 0.633;
-    shader->speed = -1.234;
-    shader->density = 1;
-    shader->hue = 20;
+    shader->scale = 0.433;
+    shader->speed = -0.234;
+    shader->density = 0;
+    shader->hue = 0;
     shader->saturation = 255;
     shader->brightness = 255;
     addShader(shader);
