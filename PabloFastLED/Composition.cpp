@@ -1,8 +1,5 @@
 #include "Composition.h"
 
-#include "ChaserShader.h"
-#include "ShaderBreathing.h"
-
 Composition::Composition()
 {
   shaders = new LinkedList<LEDShader *>();
