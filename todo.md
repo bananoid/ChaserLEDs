@@ -3,6 +3,7 @@
   [x] Composition speed offset
   [x] Abstract Scene to use a descriptor for the animation
   [] Saw shader
+  [] Try to change led color to float;
   [] Make more compositions
   [] Auto Evolve Animation
     [] random Scene
