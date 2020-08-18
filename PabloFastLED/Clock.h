@@ -5,7 +5,7 @@
 #include <IntervalTimer.h>
 
 #define DEFAULT_BEAT_TIME 500000 // 120 BPM in microsectonds
-#define TICK_PER_BEAT 32
+#define TICK_PER_BEAT 8          // Max resolition 1/32 Bar => 1/8 Beat
 #define TAP_MAX_COUNT 8
 #define TAP_TIME_OUT 2000000     // 30 BPM  => min clock speed
 #define TAP_DEBOUNCE_TIME 200000 // 300 BPM => max clock speed

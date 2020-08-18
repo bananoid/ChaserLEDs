@@ -3,8 +3,8 @@
 
 #include "../Composition.h"
 
-#include "../ChaserShader.h"
-#include "../ShaderBreathing.h"
+#include "../Shaders/ChaserShader.h"
+#include "../Shaders/ShaderBreathing.h"
 
 class Rain : public Composition
 {
@@ -29,7 +29,7 @@ public:
     shader->speed = 10.1;
     shader->density = 0.03;
     shader->hue = 140;
-    shader->saturation = 130;
+    shader->saturation = 0;
     shader->brightness = 255;
     addShader(shader);
 
@@ -39,7 +39,7 @@ public:
     shader->speed = 1.;
     shader->density = 0.05;
     shader->hue = 150;
-    shader->saturation = 35;
+    shader->saturation = 0;
     shader->brightness = 255;
     addShader(shader);
 
@@ -49,7 +49,7 @@ public:
     shader->speed = 0.5;
     shader->density = 0.3;
     shader->hue = 140;
-    shader->saturation = 100;
+    shader->saturation = 0;
     shader->brightness = 200;
     addShader(shader);
   };

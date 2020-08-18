@@ -5,7 +5,7 @@
 
 #include <Arduino.h>
 #include <FastLED.h>
-#include <LinkedList.h>
+#include "LinkedList.h"
 
 #include "Strip.h"
 #include "LEDShader.h"
@@ -14,9 +14,10 @@ class Composition
 {
 private:
 public:
-  // LEDShader *shaders[NUM_SHADER_PER_COMPISITION];
   LinkedList<LEDShader *> *shaders;
   Composition();
+  float speedOffset = 1;
+  float hueOffset = 0;
   virtual void addShader(LEDShader *shader);
   virtual void update(Strip *strip, float deltaTime);
 };

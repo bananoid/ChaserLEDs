@@ -3,8 +3,8 @@
 
 #include "../Composition.h"
 
-#include "../ChaserShader.h"
-#include "../ShaderBreathing.h"
+#include "../Shaders/ChaserShader.h"
+#include "../Shaders/ShaderBreathing.h"
 
 class Vein : public Composition
 {

@@ -3,7 +3,7 @@
 
 #include "config.h"
 
-#include <LinkedList.h>
+#include "LinkedList.h"
 
 #include "Composition.h"
 #include "Scene.h"
@@ -13,13 +13,17 @@
 class SceneManager : public ClockDelegate
 {
 private:
+  LinkedList<Composition *> allCompositions;
+
 public:
+  int stepCount = 0;
   Strip *strips[NUM_STRIPS];
   LinkedList<Scene *> scenes;
   Scene *currentScene;
   SceneManager(CRGB *leds);
   virtual void update(float deltaTime);
   void clockTick(Clock *clock) override;
+  Scene *createRandomScene();
 };
 
 #endif
