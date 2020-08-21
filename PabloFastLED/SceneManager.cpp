@@ -33,6 +33,11 @@ SceneManager::SceneManager(CRGB *leds)
 
 void SceneManager::update(float deltaTime)
 {
+  if (autoRotateSceneMode)
+  {
+    doAutoRotateWithTime();
+  }
+
   if (currentScene == NULL)
   {
     return;
@@ -42,15 +47,15 @@ void SceneManager::update(float deltaTime)
 
 void SceneManager::clockTick(Clock *clock)
 {
-  if (MasterClock.ticksCount % (TICK_PER_BEAT * 256) == 0)
-  {
-    if (currentScene != NULL)
-    {
-      delete currentScene;
-    }
+  // if (MasterClock.ticksCount % (TICK_PER_BEAT * 256) == 0)
+  // {
+  //   if (currentScene != NULL)
+  //   {
+  //     delete currentScene;
+  //   }
 
-    currentScene = createRandomScene();
-  }
+  //   currentScene = createRandomScene();
+  // }
 
   if (currentScene == NULL)
   {
@@ -58,6 +63,51 @@ void SceneManager::clockTick(Clock *clock)
   }
 
   currentScene->nextStep();
+}
+
+void SceneManager::doAutoRotateWithTime()
+{
+  long minute = millis() / 60000;
+
+  if (currentMinute != minute)
+  {
+    currentMinute = minute;
+
+    if (minute % 1 == 0)
+    {
+    }
+
+    if (currentSceneIdx % 2 == 0)
+    {
+      digitalWrite(2, true);
+    }
+    else
+    {
+      digitalWrite(2, false);
+    }
+  }
+}
+
+void SceneManager::setCurrentSceneInx(int inx)
+{
+  currentSceneIdx = inx;
+  currentSceneIdx = currentSceneIdx % SCENE_FUNCTION_COUNT;
+
+  switch (inx)
+  {
+  case 0:
+    currentScene = createRandomScene();
+    break;
+
+  default:
+    break;
+  }
+}
+
+void SceneManager::setNextScene()
+{
+  currentSceneIdx++;
+  setCurrentSceneInx(currentSceneIdx);
 }
 
 Scene *SceneManager::createRandomScene()
@@ -99,3 +149,11 @@ Scene *SceneManager::createRandomScene()
 
   return scene;
 }
+
+// Scene *SceneManager::createScene1()
+// {
+// }
+
+// Scene *SceneManager::createScene2()
+// {
+// }

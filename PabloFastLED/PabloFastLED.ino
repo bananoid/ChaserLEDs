@@ -43,6 +43,8 @@ void setup()
   MasterClock.begin();
 
   // frameTimer.begin(drawFrame, 1000000 / 30);
+
+  pinMode(2, OUTPUT);
 }
 
 void loop()
