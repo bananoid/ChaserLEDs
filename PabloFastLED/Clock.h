@@ -10,7 +10,7 @@
 #define TAP_TIME_OUT 2000000     // 30 BPM  => min clock speed
 #define TAP_DEBOUNCE_TIME 200000 // 300 BPM => max clock speed
 
-#define CLOCK_LED_PIN 13
+#define CLOCK_LED_PIN 2
 #define CLOCK_TAP_PIN 3
 
 class Clock;
