@@ -4,8 +4,17 @@
 #include <Arduino.h>
 
 #include "config.h"
+class AudioInputs;
 
-class AuidoInputs
+class AudioInputsDelegate
+{
+public:
+  virtual void audioClockTick();
+};
+
+#define CLOCK_DEBOUNCE_TIME 100000
+
+class AudioInputs
 {
 private:
 public:
@@ -13,8 +22,10 @@ public:
   float mid = 0;
   float hight = 0;
   bool clockIn = false;
+  unsigned long lastClockInTime = 0;
+  AudioInputsDelegate *delegate;
 
-  AuidoInputs()
+  AudioInputs()
   {
     pinMode(AUDIO_IN_CLOCK_PIN, INPUT);
     pinMode(AUDIO_IN_LOW_PIN, INPUT);
@@ -29,6 +40,18 @@ public:
   void update()
   {
     clockIn = digitalRead(AUDIO_IN_CLOCK_PIN);
+
+    unsigned long curTime = micros();
+    long clockDeltaTime = curTime - lastClockInTime;
+
+    if (clockIn && clockDeltaTime > CLOCK_DEBOUNCE_TIME)
+    {
+      lastClockInTime = curTime;
+      if (delegate)
+      {
+        delegate->audioClockTick();
+      }
+    }
 
     float lowFilterSpeed = 0.7;
     float midFilterSpeed = 0.1;
@@ -46,6 +69,6 @@ public:
   }
 };
 
-extern AuidoInputs MasterAudioInput;
+extern AudioInputs MasterAudioInput;
 
 #endif

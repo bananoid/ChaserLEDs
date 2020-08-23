@@ -44,6 +44,8 @@ void setup()
   MasterClock.delegate = sceneManager;
   MasterClock.begin();
 
+  MasterAudioInput.delegate = sceneManager;
+
   // frameTimer.begin(drawFrame, 1000000 / 30);
 
   pinMode(2, OUTPUT);

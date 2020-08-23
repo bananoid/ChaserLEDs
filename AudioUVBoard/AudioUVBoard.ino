@@ -18,6 +18,17 @@ AudioControlSGTL5000 sgtl5000_1; //xy=736,779
 
 #include "AudioOutputs.h"
 
+float lowBand = 0;
+float midBand = 0;
+float hiBand = 0;
+
+int kickDebounceTime = 100;
+float kickThreshold = 0.5;
+float kickThresholdFilterSpeed = 0.00001;
+float kickMinThreshold = 0.1;
+float kickMaxThreshold = 0.9;
+bool kickTrig = false;
+
 void setup()
 {
   pinMode(AUDIO_OUT_CLOCK_PIN, OUTPUT);
@@ -39,26 +50,35 @@ void loop()
 
   if (fft1024_1.available())
   {
-    float lowBand = fft1024_1.read(0, 4);
-    float midBand = fft1024_1.read(15, 150);
-    float hiBand = fft1024_1.read(200, 511);
+    lowBand = fft1024_1.read(0, 4);
+    midBand = fft1024_1.read(15, 150);
+    hiBand = fft1024_1.read(200, 511);
 
-    analogWrite(AUDIO_OUT_LOW_PIN, powf(lowBand * 5, 9) * 200 * 255);
-    analogWrite(AUDIO_OUT_MID_PIN, powf(midBand * 20, 7) * 50 * 255);
-    analogWrite(AUDIO_OUT_HIGH_PIN, powf(hiBand * 20, 6) * 500 * 255);
-    // analogWrite(AUDIO_OUT_LOW_PIN, powf(lowBand * 5, 9) * 200 * 255);
-    // analogWrite(AUDIO_OUT_MID_PIN, powf(midBand * 20, 7) * 50 * 255);
-    // analogWrite(AUDIO_OUT_HIGH_PIN, powf(hiBand * 20, 8) * 500 * 255);
+    lowBand = powf(lowBand * 5, 9) * 200;
+    midBand = powf(midBand * 20, 7) * 50;
+    hiBand = powf(hiBand * 20, 6) * 500;
   }
 
-  int time = millis() / 500;
+  // analogWrite(AUDIO_OUT_LOW_PIN, lowBand * 255);
+  // analogWrite(AUDIO_OUT_MID_PIN, midBand * 255);
 
-  if (time % 2 == 0)
+  analogWrite(AUDIO_OUT_HIGH_PIN, midBand * 255);
+  analogWrite(AUDIO_OUT_MID_PIN, lowBand * 255);
+  analogWrite(AUDIO_OUT_LOW_PIN, kickThreshold * 255); // debug
+
+  if (lowBand > kickThreshold)
   {
-    digitalWrite(AUDIO_OUT_CLOCK_PIN, true);
+    kickTrig = true;
   }
   else
   {
-    digitalWrite(AUDIO_OUT_CLOCK_PIN, 0);
+    kickTrig = false;
   }
+
+  kickThreshold = max(kickThreshold, kickMinThreshold);
+  // kickThreshold = min(kickThreshold, kickMaxThreshold);
+
+  kickThreshold += (lowBand - kickThreshold) * kickThresholdFilterSpeed;
+
+  digitalWrite(AUDIO_OUT_CLOCK_PIN, kickTrig);
 }

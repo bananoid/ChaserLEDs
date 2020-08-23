@@ -1,3 +1,3 @@
 #include "AudioInputs.h"
 
-AuidoInputs MasterAudioInput;
+AudioInputs MasterAudioInput;
