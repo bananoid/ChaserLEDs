@@ -12,7 +12,7 @@ public:
   virtual void audioClockTick();
 };
 
-#define CLOCK_DEBOUNCE_TIME 100000
+#define CLOCK_DEBOUNCE_TIME 200000
 
 class AudioInputs
 {

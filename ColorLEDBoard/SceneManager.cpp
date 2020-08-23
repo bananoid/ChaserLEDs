@@ -160,7 +160,7 @@ Scene *SceneManager::createRandomScene()
 
   scene->addTimelineOperation(9, SOP_Random);
   scene->addTimelineOperation(5, SOP_RandomSpeed);
-  scene->addTimelineOperation(4, SOP_ShiftFW);
+  scene->addTimelineOperation(1, SOP_ShiftFW);
   // scene->addTimelineOperation(3, SOP_ShiftBW);
 
   scene->isMirrored = true;
