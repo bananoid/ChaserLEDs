@@ -18,7 +18,10 @@ Clock::Clock()
 
 void Clock::begin()
 {
+
+#ifdef CLOCK_LED_PIN
   pinMode(CLOCK_LED_PIN, OUTPUT);
+#endif
   pinMode(CLOCK_TAP_PIN, INPUT_PULLUP);
   attachInterrupt(CLOCK_TAP_PIN, tap_outer, FALLING);
 
@@ -58,9 +61,11 @@ void Clock::tap()
     setClockSpeed(bT);
   }
 
+#ifdef CLOCK_LED_PIN
   digitalWrite(CLOCK_LED_PIN, true);
   delay(10);
   digitalWrite(CLOCK_LED_PIN, false);
+#endif
 }
 
 void Clock::tick()
@@ -75,7 +80,7 @@ void Clock::tick()
 
   if (tapCount == 0)
   {
-
+#ifdef CLOCK_LED_PIN
     if (ticksBeatCount == 0)
     {
       digitalWrite(CLOCK_LED_PIN, true);
@@ -84,6 +89,7 @@ void Clock::tick()
     {
       digitalWrite(CLOCK_LED_PIN, false);
     }
+#endif
   }
 
   ticksBeatCount++;

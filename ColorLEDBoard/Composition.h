@@ -16,6 +16,7 @@ private:
 public:
   LinkedList<LEDShader *> *shaders;
   Composition();
+  float intencityMult = 1;
   float speedOffset = 1;
   float hueOffset = 0;
   virtual void addShader(LEDShader *shader);

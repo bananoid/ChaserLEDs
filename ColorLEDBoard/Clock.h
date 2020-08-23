@@ -4,14 +4,13 @@
 #include <Arduino.h>
 #include <IntervalTimer.h>
 
+#include "config.h"
+
 #define DEFAULT_BEAT_TIME 500000 // 120 BPM in microsectonds
 #define TICK_PER_BEAT 8          // Max resolition 1/32 Bar => 1/8 Beat
 #define TAP_MAX_COUNT 8
 #define TAP_TIME_OUT 2000000     // 30 BPM  => min clock speed
 #define TAP_DEBOUNCE_TIME 200000 // 300 BPM => max clock speed
-
-#define CLOCK_LED_PIN 2
-#define CLOCK_TAP_PIN 3
 
 class Clock;
 

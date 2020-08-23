@@ -4,6 +4,7 @@
 
 #include "SceneManager.h"
 #include "Clock.h"
+#include "AudioInputs.h"
 
 CRGB leds[NUM_STRIPS * NUM_LEDS_PER_STRIP];
 
@@ -30,7 +31,7 @@ void setup()
   Serial.begin(9600);
   // LED computations are done in parallel in the ports 19,18,14,15,17,16,22
   // LED computations are done in parallel in the ports 10,12,11,13,6,9,32,8,7
-  LEDS.addLeds<NUM_STRIPS, WS2811, 10, GRB>(leds, NUM_LEDS_PER_STRIP);
+  LEDS.addLeds<NUM_STRIPS, WS2811, 19, GRB>(leds, NUM_LEDS_PER_STRIP);
 
   LEDS.setBrightness(255);
   LEDS.setDither(0);
@@ -51,6 +52,7 @@ void setup()
 void loop()
 {
   drawFrame();
+  MasterAudioInput.update();
 }
 
 void drawFrame()

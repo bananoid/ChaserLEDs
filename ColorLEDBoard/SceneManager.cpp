@@ -5,6 +5,8 @@
 #include "Compositions/SimpleColor.h"
 #include "Compositions/Test.h"
 
+#include "AudioInputs.h"
+
 SceneManager::SceneManager(CRGB *leds)
 {
   // Initialize Strips
@@ -42,6 +44,9 @@ void SceneManager::update(float deltaTime)
   {
     return;
   }
+  currentScene->intencityMult = MasterAudioInput.mid * 2 + 0.1;
+  currentScene->speedOffset = 0.5 + MasterAudioInput.low * 2;
+
   currentScene->update(deltaTime);
 }
 

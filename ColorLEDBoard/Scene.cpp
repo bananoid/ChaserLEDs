@@ -71,7 +71,8 @@ void Scene::update(float deltaTime)
     compInx = stp.map[i] % compositions.size();
     comp = compositions.get(compInx);
 
-    comp->speedOffset = speedOffset;
+    comp->intencityMult = intencityMult;
+    comp->speedOffset = speed * speedOffset;
     comp->hueOffset = hueOffset;
 
     comp->update(strips[i], deltaTime);
@@ -145,7 +146,7 @@ void Scene::opRandomSpeed()
   // int fastSpeed = random(0, 20) > 0 ? 0 : 1;
   // speedOffset = random(100, 1000 + 500 * speedOffset) / 100.0 * dir;
 
-  speedOffset = random(500, 1000) / 100.0 * dir;
+  speed = (random(500, 1000) / 100.0 * dir);
 }
 
 StripToComp Scene::mirror(StripToComp stripsToComp)

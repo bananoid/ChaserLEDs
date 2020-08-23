@@ -37,6 +37,8 @@ public:
 
   bool isMirrored = false;
 
+  float intencityMult = 1;
+  float speed = 1;
   float speedOffset = 1;
   float hueOffset = 0;
 

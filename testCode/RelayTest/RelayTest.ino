@@ -1,11 +1,11 @@
-int pins[] = {0, 1, 2, 3, 4, 5, 6, 7};
+int pins[] = {33, 34, 35, 36, 37, 38, 39, 40};
 int time = 10;
 int speed = 1;
 void setup()
 {
   for (int i = 0; i < 8; i++)
   {
-    pinMode(i, OUTPUT);
+    pinMode(pins[i], OUTPUT);
   }
 }
 
@@ -24,9 +24,9 @@ void loop()
 
   for (int i = 0; i < 8; i++)
   {
-    digitalWrite(i, false);
+    digitalWrite(pins[i], true);
     delay(time);
-    digitalWrite(i, true);
+    digitalWrite(pins[i], false);
     delay(time);
   }
 
