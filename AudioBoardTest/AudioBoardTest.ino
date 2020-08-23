@@ -23,9 +23,9 @@ void setup()
   Serial.begin(9600);
   AudioMemory(160);
   sgtl5000_1.enable();
-  sgtl5000_1.volume(0.5);
+  sgtl5000_1.volume(1);
   sgtl5000_1.inputSelect(AUDIO_INPUT_MIC);
-  sgtl5000_1.micGain(15); // from 0db to 63db
+  sgtl5000_1.micGain(30); // from 0db to 63db
   delay(1000);
 }
 
@@ -45,11 +45,11 @@ void loop()
   // analogWrite(28, 10);
   if (fft1024_1.available())
   {
-    float lowBand = fft1024_1.read(0, 4);
+    float lowBand = fft1024_1.read(0, 14);
     float midBand = fft1024_1.read(15, 150);
     float hiBand = fft1024_1.read(200, 511);
 
-    analogWrite(24, powf(lowBand * 3, 9) * 200 * 255);
+    analogWrite(24, powf(lowBand * 5, 9) * 200 * 255);
     analogWrite(25, powf(midBand * 20, 7) * 50 * 255);
     analogWrite(28, powf(hiBand * 20, 8) * 500 * 255);
   }
