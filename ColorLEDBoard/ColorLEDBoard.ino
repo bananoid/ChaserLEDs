@@ -27,6 +27,7 @@ void clearAll()
 
 void setup()
 {
+
   delay(500);
   Serial.begin(9600);
   // LED computations are done in parallel in the ports 19,18,14,15,17,16,22

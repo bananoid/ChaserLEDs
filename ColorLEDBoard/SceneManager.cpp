@@ -7,6 +7,14 @@
 
 SceneManager::SceneManager(CRGB *leds)
 {
+
+  pinMode(INTERNAL_CLOCK_SWITCH_PIN, INPUT_PULLUP);
+  pinMode(SCENE_AUTO_BUTTON_PIN, INPUT_PULLUP);
+  pinMode(SCENE_SELECT_1_BUTTON_PIN, INPUT_PULLUP);
+  pinMode(SCENE_SELECT_2_BUTTON_PIN, INPUT_PULLUP);
+
+  pinMode(4, OUTPUT);
+
   // Initialize Strips
 
   for (int i = 0; i < NUM_STRIPS; i++)
@@ -28,12 +36,16 @@ SceneManager::SceneManager(CRGB *leds)
   allCompositions.add(new Vein());
   allCompositions.add(new Rain());
 
-  currentScene = createRandomScene();
+  // currentScene = createRandomScene();
+  // currentScene = createScene1();
+  currentScene = createScene2();
 }
 
 void SceneManager::update(float deltaTime)
 {
-  if (autoRotateSceneMode)
+  checkButtonsState();
+
+  if (selectionMode == Auto)
   {
     doAutoRotateWithTime();
   }
@@ -47,6 +59,46 @@ void SceneManager::update(float deltaTime)
   // currentScene->speedOffset = 0.5 + MasterAudioInput.low * 2;
 
   currentScene->update(deltaTime);
+}
+
+void SceneManager::checkButtonsState()
+{
+
+  if (
+      !digitalRead(SCENE_AUTO_BUTTON_PIN) ||
+      !digitalRead(SCENE_SELECT_1_BUTTON_PIN) ||
+      !digitalRead(SCENE_SELECT_2_BUTTON_PIN))
+  {
+    digitalWrite(4, true);
+  }
+  else
+  {
+    digitalWrite(4, false);
+  }
+
+  if (!digitalRead(SCENE_AUTO_BUTTON_PIN) && selectionMode != Auto)
+  {
+    Serial.println("Auto");
+    selectionMode = Auto;
+    currentScene = createRandomScene();
+    return;
+  }
+
+  if (!digitalRead(SCENE_SELECT_1_BUTTON_PIN) && selectionMode != Scene1)
+  {
+    Serial.println("Scene1");
+    selectionMode = Scene1;
+    currentScene = createScene1();
+    return;
+  }
+
+  if (!digitalRead(SCENE_SELECT_2_BUTTON_PIN) && selectionMode != Scene2)
+  {
+    Serial.println("Scene2");
+    selectionMode = Scene2;
+    currentScene = createScene2();
+    return;
+  }
 }
 
 void SceneManager::clockTick(Clock *clock)
@@ -116,7 +168,9 @@ void SceneManager::setCurrentSceneInx(int inx)
   case 0:
     currentScene = createRandomScene();
     break;
-
+  case 1:
+    currentScene = createScene1();
+    break;
   default:
     break;
   }
@@ -168,10 +222,55 @@ Scene *SceneManager::createRandomScene()
   return scene;
 }
 
-// Scene *SceneManager::createScene1()
-// {
-// }
+Scene *SceneManager::createScene1()
+{
+  Scene *scene = new Scene(strips);
 
-// Scene *SceneManager::createScene2()
-// {
-// }
+  //Add Compositions
+  scene->addComposition(allCompositions.get(0));
+
+  scene->hueOffset = 130;
+
+  //Apply initial operations
+  scene->applyOperation(SOP_Sorted);
+  scene->addComposition(allCompositions.get(4));
+  // scene->applyOperation(SOP_Random);
+
+  // Set Timeline Operations
+
+  scene->addTimelineOperation(1, SOP_Random);
+  scene->addTimelineOperation(1, SOP_RandomSpeed);
+  scene->addTimelineOperation(1, SOP_ShiftFW);
+  // scene->addTimelineOperation(3, SOP_ShiftBW);
+
+  scene->isMirrored = false;
+
+  return scene;
+}
+
+Scene *SceneManager::createScene2()
+{
+  Scene *scene = new Scene(strips);
+
+  //Add Compositions
+  scene->addComposition(allCompositions.get(2));
+  scene->addComposition(allCompositions.get(4));
+
+  scene->hueOffset = 160;
+  scene->speedOffset = 0.2;
+
+  //Apply initial operations
+  scene->applyOperation(SOP_Sorted);
+  // scene->applyOperation(SOP_Random);
+
+  // Set Timeline Operations
+
+  scene->addTimelineOperation(1, SOP_Random);
+  scene->addTimelineOperation(1, SOP_RandomSpeed);
+  scene->addTimelineOperation(1, SOP_ShiftFW);
+  // scene->addTimelineOperation(3, SOP_ShiftBW);
+
+  scene->isMirrored = false;
+
+  return scene;
+}

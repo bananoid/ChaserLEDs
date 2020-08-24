@@ -13,6 +13,13 @@
 
 #define SCENE_FUNCTION_COUNT 1
 
+enum SelectionMode
+{
+  Auto,
+  Scene1,
+  Scene2
+};
+
 class SceneManager : public ClockDelegate, public AudioInputsDelegate
 {
 private:
@@ -21,7 +28,6 @@ private:
 public:
   bool clockFromAudio = true;
   // void setClockFromAudio(bool fromAudio);
-  bool autoRotateSceneMode = true;
   int stepCount = 0;
   Strip *strips[NUM_STRIPS];
   LinkedList<Scene *> scenes;
@@ -38,6 +44,13 @@ public:
   void setCurrentSceneInx(int inx);
   void setNextScene();
   void doAutoRotateWithTime();
+
+  void checkButtonsState();
+
+  SelectionMode selectionMode = Auto;
+
+  Scene *createScene1();
+  Scene *createScene2();
 };
 
 #endif

@@ -20,7 +20,7 @@ public:
     shader->scale = 1.0;
     shader->speed = 1.0;
     shader->density = 0.0;
-    shader->hue = 180;
+    shader->hue = 10;
     shader->saturation = 255;
     shader->brightness = 255;
     addShader(shader);

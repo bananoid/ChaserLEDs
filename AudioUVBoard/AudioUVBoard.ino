@@ -41,7 +41,7 @@ void setup()
   sgtl5000_1.enable();
   sgtl5000_1.volume(1);
   sgtl5000_1.inputSelect(AUDIO_INPUT_MIC);
-  sgtl5000_1.micGain(20); // from 0db to 63db
+  sgtl5000_1.micGain(30); // from 0db to 63db
   delay(1000);
 }
 
