@@ -12,7 +12,7 @@ public:
   virtual void audioClockTick();
 };
 
-#define CLOCK_DEBOUNCE_TIME 200000
+#define CLOCK_DEBOUNCE_TIME 200000 // 200000
 
 class AudioInputs
 {
@@ -59,7 +59,8 @@ public:
 
     low += (digitalRead(AUDIO_IN_LOW_PIN) - low) * lowFilterSpeed;
     mid += (digitalRead(AUDIO_IN_MID_PIN) - mid) * midFilterSpeed;
-    hight += (digitalRead(AUDIO_IN_HIGH_PIN) - hight) * highFilterSpeed;
+    // hight += (digitalRead(AUDIO_IN_HIGH_PIN) - hight) * highFilterSpeed;
+    hight = digitalRead(AUDIO_IN_HIGH_PIN);
 
     digitalWrite(AUDIO_DEBUG_CLOCK_LED_PIN, clockIn);
 

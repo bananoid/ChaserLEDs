@@ -3,6 +3,7 @@
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
+#include <IntervalTimer.h>
 
 // GUItool: begin automatically generated code
 AudioInputI2S i2s2;            //xy=509,547
@@ -23,12 +24,22 @@ float midBand = 0;
 float hiBand = 0;
 
 int kickDebounceTime = 100;
+
 float kickThreshold = 0.5;
-float kickThresholdFilterSpeed = 0.0002; // 0.00001;
-float kickMinThreshold = 0.1;
-float kickMaxThreshold = 0.9;
+float kickThresholdFilterSpeed = 0.000004; // 0.00001;
+float kickMinThreshold = 0.3;
+
+float hihatThreshold = 0.5;
+float hihatThresholdFilterSpeed = 0.000004; // 0.00001;
+float hihatMinThreshold = 0.3;
+
 bool kickTrig = false;
+bool hihatTrig = false;
+
 int micGainValue = 0;
+
+long deltaTime = 0;
+unsigned long lastTime;
 
 void setup()
 {
@@ -46,44 +57,46 @@ void setup()
   sgtl5000_1.inputSelect(AUDIO_INPUT_MIC);
   sgtl5000_1.micGain(30); // from 0db to 63db
   delay(1000);
+
+  lastTime = micros();
 }
 
 void loop()
 {
+  unsigned long curTime = micros();
+  deltaTime = curTime - lastTime;
+  lastTime = curTime;
 
   if (fft1024_1.available())
   {
-    lowBand = fft1024_1.read(2, 4);
-    midBand = fft1024_1.read(15, 150);
-    hiBand = fft1024_1.read(200, 511);
+    lowBand = fft1024_1.read(1, 3);
+    midBand = fft1024_1.read(4, 511);
+    hiBand = fft1024_1.read(150, 300);
 
-    lowBand = powf(lowBand * 5, 9) * 200;
-    midBand = powf(midBand * 20, 7) * 50;
-    hiBand = powf(hiBand * 20, 6) * 500;
+    lowBand = powf(lowBand * 20, 10);
+    midBand = powf(midBand, 2) * 200;
+    hiBand = powf(hiBand * 20, 10);
   }
 
-  // analogWrite(AUDIO_OUT_LOW_PIN, lowBand * 255);
-  // analogWrite(AUDIO_OUT_MID_PIN, midBand * 255);
-
-  analogWrite(AUDIO_OUT_HIGH_PIN, midBand * 255);
+  // analogWrite(AUDIO_OUT_HIGH_PIN, midBand * 255);
   analogWrite(AUDIO_OUT_MID_PIN, lowBand * 255);
   analogWrite(AUDIO_OUT_LOW_PIN, hiBand * 255);
 
-  if (lowBand > kickThreshold)
-  {
-    kickTrig = true;
-  }
-  else
-  {
-    kickTrig = false;
-  }
+  kickTrig = lowBand > kickThreshold * 1.5;
+  hihatTrig = hiBand > hihatThreshold * 1.5;
 
+  kickThreshold += (lowBand - kickThreshold) * kickThresholdFilterSpeed * deltaTime;
   kickThreshold = max(kickThreshold, kickMinThreshold);
-  // kickThreshold = min(kickThreshold, kickMaxThreshold);
 
-  kickThreshold += (lowBand - kickThreshold) * kickThresholdFilterSpeed;
+  if (kickTrig)
+  {
+    hihatTrig = false;
+  }
+  hihatThreshold += (hiBand - hihatThreshold) * hihatThresholdFilterSpeed * deltaTime;
+  hihatThreshold = max(hihatThreshold, hihatMinThreshold);
 
   digitalWrite(AUDIO_OUT_CLOCK_PIN, kickTrig);
+  digitalWrite(AUDIO_OUT_HIGH_PIN, hihatTrig);
 
   int gainPotValue = analogRead(AUDIO_GAIN_POT_PIN);
 
@@ -91,11 +104,6 @@ void loop()
   gainValue = max(0, gainValue);
   gainValue = min(63, gainValue);
 
-  // analogWrite(AUDIO_OUT_LOW_PIN, gainValue);
-
-  // Serial.print(gainPotValue);
-  // Serial.print(" ");
-  // Serial.println(gainValue);
   if (micGainValue != gainValue)
   {
     micGainValue = gainValue;

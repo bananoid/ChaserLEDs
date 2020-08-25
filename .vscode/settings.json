@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "*.eex": "HTML (EEx)",
+    "*.leex": "HTML (EEx)",
+    "istream": "cpp"
+  }
+}
