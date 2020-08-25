@@ -36,19 +36,29 @@ SceneManager::SceneManager(CRGB *leds)
   allCompositions.add(new Vein());
   allCompositions.add(new Rain());
 
-  // currentScene = createRandomScene();
-  // currentScene = createScene1();
-  currentScene = createScene2();
+  for (int i = 0; i < SCENE_FUNCTION_COUNT; i++)
+  {
+    beatScenes.add(createTechnoScene(false));
+    breakDownScenes.add(createTechnoScene(true));
+  }
+
+  fireSceneBeat = createFireScene(false);
+  fireSceneBreakDown = createFireScene(true);
+
+  ambientSceneBeat = createAmbientScene(false);
+  ambientSceneBreakDown = createAmbientScene(true);
+
+  currentScene = beatScenes.get(0);
 }
 
 void SceneManager::update(float deltaTime)
 {
   checkButtonsState();
 
-  if (selectionMode == Auto)
-  {
-    doAutoRotateWithTime();
-  }
+  // if (selectionMode == Auto)
+  // {
+  //   doAutoRotateWithTime();
+  // }
 
   if (currentScene == NULL)
   {
@@ -76,27 +86,27 @@ void SceneManager::checkButtonsState()
     digitalWrite(SCENE_DEBUG_LED_PIN, false);
   }
 
-  if (!digitalRead(SCENE_AUTO_BUTTON_PIN) && selectionMode != Auto)
+  if (!digitalRead(SCENE_AUTO_BUTTON_PIN) && selectionMode != AUTO)
   {
-    Serial.println("Auto");
-    selectionMode = Auto;
-    currentScene = createRandomScene();
+    Serial.println("AUTO");
+    selectionMode = AUTO;
+    setNextScene();
     return;
   }
 
-  if (!digitalRead(SCENE_SELECT_1_BUTTON_PIN) && selectionMode != Scene1)
+  if (!digitalRead(SCENE_SELECT_1_BUTTON_PIN) && selectionMode != FIRE)
   {
-    Serial.println("Scene1");
-    selectionMode = Scene1;
-    currentScene = createScene1();
+    Serial.println("FIRE");
+    selectionMode = FIRE;
+    setNextScene();
     return;
   }
 
-  if (!digitalRead(SCENE_SELECT_2_BUTTON_PIN) && selectionMode != Scene2)
+  if (!digitalRead(SCENE_SELECT_2_BUTTON_PIN) && selectionMode != AMBIENT)
   {
-    Serial.println("Scene2");
-    selectionMode = Scene2;
-    currentScene = createScene2();
+    Serial.println("AMBIENT");
+    selectionMode = AMBIENT;
+    setNextScene();
     return;
   }
 }
@@ -107,15 +117,6 @@ void SceneManager::clockTick(Clock *clock)
   {
     return;
   }
-  // if (MasterClock.ticksCount % (TICK_PER_BEAT * 256) == 0)
-  // {
-  //   if (currentScene != NULL)
-  //   {
-  //     delete currentScene;
-  //   }
-
-  //   currentScene = createRandomScene();
-  // }
 
   if (currentScene == NULL)
   {
@@ -135,61 +136,65 @@ void SceneManager::audioClockTick()
   currentScene->nextStep();
 }
 
-void SceneManager::breakDownBegin(){
-
-};
-void SceneManager::breakDownEnd(){
-
-};
-
-void SceneManager::doAutoRotateWithTime()
+void SceneManager::breakDownBegin()
 {
-  long minute = millis() / 60000;
+  setNextScene();
+};
+void SceneManager::breakDownEnd()
+{
+  setNextScene();
+};
 
-  if (currentMinute != minute)
-  {
-    currentMinute = minute;
+// void SceneManager::doAutoRotateWithTime()
+// {
+//   long minute = millis() / 60000;
 
-    if (minute % 1 == 0)
-    {
-    }
+//   if (currentMinute != minute)
+//   {
+//     currentMinute = minute;
 
-    if (currentSceneIdx % 2 == 0)
-    {
-      digitalWrite(2, true);
-    }
-    else
-    {
-      digitalWrite(2, false);
-    }
-  }
-}
+//     if (minute % 1 == 0)
+//     {
+//     }
+
+//     if (currentSceneIdx % 2 == 0)
+//     {
+//       digitalWrite(2, true);
+//     }
+//     else
+//     {
+//       digitalWrite(2, false);
+//     }
+//   }
+// }
 
 void SceneManager::setCurrentSceneInx(int inx)
 {
-  currentSceneIdx = inx;
-  currentSceneIdx = currentSceneIdx % SCENE_FUNCTION_COUNT;
-
-  switch (inx)
+  if (selectionMode == AUTO)
   {
-  case 0:
-    currentScene = createRandomScene();
-    break;
-  case 1:
-    currentScene = createScene1();
-    break;
-  default:
-    break;
+    currentSceneIdx = inx;
+    currentSceneIdx = currentSceneIdx % SCENE_FUNCTION_COUNT;
+
+    currentScene = MasterAudioInput.onBreakDown ? breakDownScenes.get(currentSceneIdx) : beatScenes.get(currentSceneIdx);
+  }
+
+  if (selectionMode == FIRE)
+  {
+    currentScene = MasterAudioInput.onBreakDown ? fireSceneBreakDown : fireSceneBeat;
+  }
+
+  if (selectionMode == AMBIENT)
+  {
+    currentScene = MasterAudioInput.onBreakDown ? ambientSceneBreakDown : ambientSceneBeat;
   }
 }
 
 void SceneManager::setNextScene()
 {
-  currentSceneIdx++;
-  setCurrentSceneInx(currentSceneIdx);
+  setCurrentSceneInx(currentSceneIdx + 1);
 }
 
-Scene *SceneManager::createRandomScene()
+Scene *SceneManager::createTechnoScene(bool breakDown)
 {
   Scene *scene = new Scene(strips);
 
@@ -229,7 +234,7 @@ Scene *SceneManager::createRandomScene()
   return scene;
 }
 
-Scene *SceneManager::createScene1()
+Scene *SceneManager::createFireScene(bool breakDown)
 {
   Scene *scene = new Scene(strips);
 
@@ -255,7 +260,7 @@ Scene *SceneManager::createScene1()
   return scene;
 }
 
-Scene *SceneManager::createScene2()
+Scene *SceneManager::createAmbientScene(bool breakDown)
 {
   Scene *scene = new Scene(strips);
 

@@ -15,9 +15,9 @@
 
 enum SelectionMode
 {
-  Auto,
-  Scene1,
-  Scene2
+  AUTO,
+  FIRE,
+  AMBIENT
 };
 
 class SceneManager : public ClockDelegate, public AudioInputsDelegate
@@ -30,7 +30,16 @@ public:
   // void setClockFromAudio(bool fromAudio);
   int stepCount = 0;
   Strip *strips[NUM_STRIPS];
-  LinkedList<Scene *> scenes;
+
+  LinkedList<Scene *> beatScenes;
+  LinkedList<Scene *> breakDownScenes;
+
+  Scene *fireSceneBeat;
+  Scene *fireSceneBreakDown;
+
+  Scene *ambientSceneBeat;
+  Scene *ambientSceneBreakDown;
+
   Scene *currentScene;
   int currentSceneIdx = 0;
   long currentMinute = 0;
@@ -42,17 +51,17 @@ public:
   void breakDownBegin() override;
   void breakDownEnd() override;
 
-  Scene *createRandomScene();
   void setCurrentSceneInx(int inx);
   void setNextScene();
-  void doAutoRotateWithTime();
+  // void doAutoRotateWithTime();
 
   void checkButtonsState();
 
-  SelectionMode selectionMode = Auto;
+  SelectionMode selectionMode = AUTO;
 
-  Scene *createScene1();
-  Scene *createScene2();
+  Scene *createTechnoScene(bool breakDown);
+  Scene *createFireScene(bool breakDown);
+  Scene *createAmbientScene(bool breakDown);
 };
 
 #endif
