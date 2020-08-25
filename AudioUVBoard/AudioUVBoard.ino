@@ -24,10 +24,11 @@ float hiBand = 0;
 
 int kickDebounceTime = 100;
 float kickThreshold = 0.5;
-float kickThresholdFilterSpeed = 0.00001;
+float kickThresholdFilterSpeed = 0.0002; // 0.00001;
 float kickMinThreshold = 0.1;
 float kickMaxThreshold = 0.9;
 bool kickTrig = false;
+int micGainValue = 0;
 
 void setup()
 {
@@ -35,6 +36,8 @@ void setup()
   pinMode(AUDIO_OUT_LOW_PIN, OUTPUT);
   pinMode(AUDIO_OUT_MID_PIN, OUTPUT);
   pinMode(AUDIO_OUT_HIGH_PIN, OUTPUT);
+
+  pinMode(AUDIO_GAIN_POT_PIN, INPUT);
 
   Serial.begin(9600);
   AudioMemory(160);
@@ -50,7 +53,7 @@ void loop()
 
   if (fft1024_1.available())
   {
-    lowBand = fft1024_1.read(0, 4);
+    lowBand = fft1024_1.read(2, 4);
     midBand = fft1024_1.read(15, 150);
     hiBand = fft1024_1.read(200, 511);
 
@@ -64,7 +67,7 @@ void loop()
 
   analogWrite(AUDIO_OUT_HIGH_PIN, midBand * 255);
   analogWrite(AUDIO_OUT_MID_PIN, lowBand * 255);
-  analogWrite(AUDIO_OUT_LOW_PIN, kickThreshold * 255); // debug
+  analogWrite(AUDIO_OUT_LOW_PIN, hiBand * 255);
 
   if (lowBand > kickThreshold)
   {
@@ -81,4 +84,21 @@ void loop()
   kickThreshold += (lowBand - kickThreshold) * kickThresholdFilterSpeed;
 
   digitalWrite(AUDIO_OUT_CLOCK_PIN, kickTrig);
+
+  int gainPotValue = analogRead(AUDIO_GAIN_POT_PIN);
+
+  int gainValue = map(gainPotValue, 30.0, 1023.0, 0, 40);
+  gainValue = max(0, gainValue);
+  gainValue = min(63, gainValue);
+
+  // analogWrite(AUDIO_OUT_LOW_PIN, gainValue);
+
+  // Serial.print(gainPotValue);
+  // Serial.print(" ");
+  // Serial.println(gainValue);
+  if (micGainValue != gainValue)
+  {
+    micGainValue = gainValue;
+    sgtl5000_1.micGain(micGainValue);
+  }
 }

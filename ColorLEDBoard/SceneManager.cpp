@@ -13,7 +13,7 @@ SceneManager::SceneManager(CRGB *leds)
   pinMode(SCENE_SELECT_1_BUTTON_PIN, INPUT_PULLUP);
   pinMode(SCENE_SELECT_2_BUTTON_PIN, INPUT_PULLUP);
 
-  pinMode(4, OUTPUT);
+  pinMode(SCENE_DEBUG_LED_PIN, OUTPUT);
 
   // Initialize Strips
 
@@ -69,11 +69,11 @@ void SceneManager::checkButtonsState()
       !digitalRead(SCENE_SELECT_1_BUTTON_PIN) ||
       !digitalRead(SCENE_SELECT_2_BUTTON_PIN))
   {
-    digitalWrite(4, true);
+    digitalWrite(SCENE_DEBUG_LED_PIN, true);
   }
   else
   {
-    digitalWrite(4, false);
+    digitalWrite(SCENE_DEBUG_LED_PIN, false);
   }
 
   if (!digitalRead(SCENE_AUTO_BUTTON_PIN) && selectionMode != Auto)
