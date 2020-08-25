@@ -135,6 +135,13 @@ void SceneManager::audioClockTick()
   currentScene->nextStep();
 }
 
+void SceneManager::breakDownBegin(){
+
+};
+void SceneManager::breakDownEnd(){
+
+};
+
 void SceneManager::doAutoRotateWithTime()
 {
   long minute = millis() / 60000;

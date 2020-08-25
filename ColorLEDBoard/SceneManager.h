@@ -39,6 +39,8 @@ public:
   void clockTick(Clock *clock) override;
 
   void audioClockTick() override;
+  void breakDownBegin() override;
+  void breakDownEnd() override;
 
   Scene *createRandomScene();
   void setCurrentSceneInx(int inx);

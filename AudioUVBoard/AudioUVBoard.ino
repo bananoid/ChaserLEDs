@@ -27,7 +27,7 @@ int kickDebounceTime = 100;
 
 float kickThreshold = 0.5;
 float kickThresholdFilterSpeed = 0.000004; // 0.00001;
-float kickMinThreshold = 0.3;
+float kickMinThreshold = 5;
 
 float hihatThreshold = 0.5;
 float hihatThresholdFilterSpeed = 0.000004; // 0.00001;
@@ -73,9 +73,9 @@ void loop()
     midBand = fft1024_1.read(4, 511);
     hiBand = fft1024_1.read(150, 300);
 
-    lowBand = powf(lowBand * 20, 10);
+    lowBand = powf(lowBand * 1.5, 8);
     midBand = powf(midBand, 2) * 200;
-    hiBand = powf(hiBand * 20, 10);
+    hiBand = powf(hiBand * 1.5, 8);
   }
 
   // analogWrite(AUDIO_OUT_HIGH_PIN, midBand * 255);
@@ -108,5 +108,10 @@ void loop()
   {
     micGainValue = gainValue;
     sgtl5000_1.micGain(micGainValue);
+  }
+
+  if (curTime / 100000 % 2 == 0)
+  {
+    Serial.println(kickThreshold);
   }
 }
