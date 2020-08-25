@@ -198,38 +198,57 @@ Scene *SceneManager::createTechnoScene(bool breakDown)
 {
   Scene *scene = new Scene(strips);
 
-  //Add Compositions
-  scene->addComposition(allCompositions.get(0));
-  scene->addComposition(allCompositions.get(0));
-  scene->addComposition(allCompositions.get(2));
-  scene->addComposition(allCompositions.get(0));
-  scene->addComposition(allCompositions.get(1));
-  scene->addComposition(allCompositions.get(0));
-  scene->addComposition(allCompositions.get(0));
-  scene->addComposition(allCompositions.get(3));
-  scene->addComposition(allCompositions.get(4));
-  scene->addComposition(allCompositions.get(1));
-  scene->addComposition(allCompositions.get(0));
-  scene->addComposition(allCompositions.get(0));
-  scene->addComposition(allCompositions.get(0));
-  scene->addComposition(allCompositions.get(0));
-  scene->addComposition(allCompositions.get(0));
-  // scene->addComposition(allCompositions.get(1));
-  // scene->addComposition(allCompositions.get(1));
-  // scene->addComposition(allCompositions.get(1));
+  if (!breakDown)
+  {
+    //Add Compositions
+    scene->addComposition(allCompositions.get(0));
+    scene->addComposition(allCompositions.get(0));
+    scene->addComposition(allCompositions.get(2));
+    scene->addComposition(allCompositions.get(0));
+    scene->addComposition(allCompositions.get(1));
+    scene->addComposition(allCompositions.get(0));
+    scene->addComposition(allCompositions.get(0));
+    scene->addComposition(allCompositions.get(3));
+    scene->addComposition(allCompositions.get(4));
+    scene->addComposition(allCompositions.get(1));
+    scene->addComposition(allCompositions.get(0));
+    scene->addComposition(allCompositions.get(0));
+    scene->addComposition(allCompositions.get(0));
+    scene->addComposition(allCompositions.get(0));
+    scene->addComposition(allCompositions.get(0));
+    // scene->addComposition(allCompositions.get(1));
+    // scene->addComposition(allCompositions.get(1));
+    // scene->addComposition(allCompositions.get(1));
 
-  //Apply initial operations
-  scene->applyOperation(SOP_Sorted);
-  // scene->applyOperation(SOP_Random);
+    //Apply initial operations
+    scene->applyOperation(SOP_Sorted);
+    // scene->applyOperation(SOP_Random);
 
-  // Set Timeline Operations
+    // Set Timeline Operations
 
-  scene->addTimelineOperation(9, SOP_Random);
-  scene->addTimelineOperation(5, SOP_RandomSpeed);
-  scene->addTimelineOperation(1, SOP_ShiftFW);
-  // scene->addTimelineOperation(3, SOP_ShiftBW);
+    scene->addTimelineOperation(1, SOP_Random);
+    scene->addTimelineOperation(1, SOP_RandomSpeed);
+    scene->addTimelineOperation(1, SOP_ShiftFW);
+    // scene->addTimelineOperation(3, SOP_ShiftBW);
 
-  scene->isMirrored = true;
+    scene->isMirrored = true;
+  }
+  else
+  {
+    scene->addComposition(new SimpleColor(CHSV(140, 0, 255)));
+    scene->addComposition(new SimpleColor(CHSV(130, 0, 255)));
+    scene->addComposition(new SimpleColor(CHSV(140, 255, 255)));
+
+    scene->speedOffset = 0.1;
+
+    scene->applyOperation(SOP_Sorted);
+
+    scene->addTimelineOperation(8, SOP_Random);
+    scene->addTimelineOperation(1, SOP_RandomSpeed);
+    scene->addTimelineOperation(1, SOP_ShiftFW);
+
+    scene->isMirrored = false;
+  }
 
   return scene;
 }
