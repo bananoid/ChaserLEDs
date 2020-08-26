@@ -41,7 +41,7 @@ public:
   float speed = 1;
   float speedOffset = 1;
   float scaleOffset = 1;
-  float densityOffset = 1;
+  float densityOffset = 0;
   float hueOffset = 0;
 
   Scene(Strip **strips);

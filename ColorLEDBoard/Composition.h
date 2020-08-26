@@ -20,7 +20,7 @@ public:
   float speedOffset = 1;
   float hueOffset = 0;
   float scaleOffset = 1;
-  float densityOffset = 1;
+  float densityOffset = 0;
   virtual void addShader(LEDShader *shader);
   virtual void update(Strip *strip, float deltaTime);
 };
