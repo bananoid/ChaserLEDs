@@ -66,20 +66,20 @@ void SceneManager::update(float deltaTime)
     return;
   }
 
-  // currentScene->speedOffset = 0.5 + MasterAudioInput.low * 2;
   if (MasterAudioInput.onBreakDown)
   {
-    currentScene->speedOffset = GFXUtils::clamp(MasterAudioInput.breakDownFadeValue * 0.7 + 0.3, 0, 1);
-    currentScene->speedOffset += GFXUtils::clamp(MasterAudioInput.mid * 1 + 0.4, 0, 1);
+    currentScene->speedOffset = GFXUtils::clamp(MasterAudioInput.breakDownFadeValue * 0.7 + 0.3, 0.3, 1);
+    currentScene->speedOffset += GFXUtils::clamp(MasterAudioInput.midFilterVal * 5 + 0.4, 0, 1);
 
     currentScene->hueOffset = (1 - MasterAudioInput.breakDownFadeValue) * 140;
 
-    currentScene->scaleOffset = GFXUtils::clamp((MasterAudioInput.breakDownFadeValue) * 1.2 + 0.3, 0, 1);
-  }
-  currentScene->intencityMult = GFXUtils::clamp(MasterAudioInput.mid, 0, 1);
+    currentScene->scaleOffset = MasterAudioInput.breakDownFadeValue * 1.2 + 0.3;
 
-  currentScene->densityOffset = 0;
-  // currentScene->densityOffset = (1 - GFXUtils::clamp(MasterAudioInput.mid * 10, 0, 1)) * -10;
+    currentScene->intencityMult = GFXUtils::clamp(MasterAudioInput.midFilterVal * 3, 0.5, 1);
+  }
+
+  // currentScene->densityOffset = 0;
+  // currentScene->densityOffset = (1 - GFXUtils::clamp(MasterAudioInput.midFilterVal * 10, 0, 1)) * -10;
 
   currentScene->update(deltaTime);
 }
@@ -231,18 +231,16 @@ Scene *SceneManager::createTechnoScene(bool breakDown)
     scene->addComposition(allCompositions.get(0));
     scene->addComposition(allCompositions.get(0));
     scene->addComposition(allCompositions.get(0));
-    // scene->addComposition(allCompositions.get(1));
-    // scene->addComposition(allCompositions.get(1));
-    // scene->addComposition(allCompositions.get(1));
 
     //Apply initial operations
-    scene->applyOperation(SOP_Sorted);
-    // scene->applyOperation(SOP_Random);
+    // scene->applyOperation(SOP_Sorted);
+    scene->applyOperation(SOP_Random);
 
+    scene->speed = 5;
     // Set Timeline Operations
 
     scene->addTimelineOperation(1, SOP_Random);
-    scene->addTimelineOperation(1, SOP_RandomSpeed);
+    // scene->addTimelineOperation(1, SOP_RandomSpeed);
     scene->addTimelineOperation(1, SOP_ShiftFW);
     // scene->addTimelineOperation(3, SOP_ShiftBW);
 
