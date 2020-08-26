@@ -2,8 +2,7 @@
   [x] Composition hue offset
   [x] Composition speed offset
   [x] Abstract Scene to use a descriptor for the animation
-  [] Saw shader
-  [] Try to change led color to float;
+  [x] Saw shader
   [] Make more compositions
   [] Auto Evolve Animation
     [] random Scene
@@ -15,6 +14,7 @@
     [x] Configure the relay
     [] Make patterns
   [] Ring buffer shader
+  [] Try to change led color to float;
 
 [] Hardware
   [] UV ligth control
@@ -24,3 +24,6 @@
   [] Color LED tubes
     [] Make the box
       [] Solder females to teensy
+
+[] Website
+[] Busines card
