@@ -28,7 +28,7 @@ public:
     shader->scale = 1.7;
     shader->speed = 10.1;
     shader->density = 0.03;
-    shader->hue = 140;
+    shader->hue = 0;
     shader->saturation = 0;
     shader->brightness = 255;
     addShader(shader);
@@ -38,7 +38,7 @@ public:
     shader->scale = 0.001;
     shader->speed = 1.;
     shader->density = 0.05;
-    shader->hue = 150;
+    shader->hue = 5;
     shader->saturation = 0;
     shader->brightness = 255;
     addShader(shader);
@@ -48,7 +48,7 @@ public:
     shader->scale = 0.1;
     shader->speed = 0.5;
     shader->density = 0.3;
-    shader->hue = 140;
+    shader->hue = 10;
     shader->saturation = 0;
     shader->brightness = 200;
     addShader(shader);

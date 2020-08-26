@@ -32,7 +32,7 @@ SceneManager::SceneManager(CRGB *leds)
 
   allCompositions = LinkedList<Composition *>();
 
-  allCompositions.add(new Test());                         // 0
+  // allCompositions.add(new Test());                         // 0
   allCompositions.add(new SimpleColor(CHSV(0, 0, 255)));   // 1
   allCompositions.add(new SimpleColor(CHSV(0, 255, 255))); // 2
   allCompositions.add(new Vein());                         // 3
@@ -205,6 +205,53 @@ Scene *SceneManager::createTechnoScene(bool breakDown)
 {
   Scene *scene = new Scene(strips);
 
+  int inx;
+  if (!breakDown)
+  {
+    int count = random(2, 6);
+    for (int i = 0; i < count; i++)
+    {
+      inx = random(allCompositions.size());
+      scene->addComposition(allCompositions.get(inx));
+    }
+  }
+  else
+  {
+    inx = random(allCompositions.size());
+    scene->addComposition(allCompositions.get(inx));
+  }
+
+  if (random(1000) > 500)
+  {
+    scene->applyOperation(SOP_Random);
+  }
+  else
+  {
+    scene->applyOperation(SOP_Sorted);
+  }
+
+  if (random(1000) > 10)
+  {
+    scene->addTimelineOperation(1, SOP_Random);
+  }
+
+  if (random(1000) > 10)
+  {
+    scene->addTimelineOperation(1, SOP_ShiftFW);
+  }
+
+  scene->isMirrored = random(2) > 1;
+
+  scene->speed = random(2, 4);
+  scene->hueOffset = random(255);
+
+  return scene;
+}
+
+Scene *SceneManager::createFireScene(bool breakDown)
+{
+  Scene *scene = new Scene(strips);
+
   if (!breakDown)
   {
     //Add Compositions
@@ -249,32 +296,6 @@ Scene *SceneManager::createTechnoScene(bool breakDown)
 
     scene->isMirrored = false;
   }
-
-  return scene;
-}
-
-Scene *SceneManager::createFireScene(bool breakDown)
-{
-  Scene *scene = new Scene(strips);
-
-  //Add Compositions
-  scene->addComposition(allCompositions.get(0));
-
-  scene->hueOffset = 130;
-
-  //Apply initial operations
-  scene->applyOperation(SOP_Sorted);
-  scene->addComposition(allCompositions.get(4));
-  // scene->applyOperation(SOP_Random);
-
-  // Set Timeline Operations
-
-  scene->addTimelineOperation(1, SOP_Random);
-  scene->addTimelineOperation(1, SOP_RandomSpeed);
-  scene->addTimelineOperation(1, SOP_ShiftFW);
-  // scene->addTimelineOperation(3, SOP_ShiftBW);
-
-  scene->isMirrored = false;
 
   return scene;
 }
