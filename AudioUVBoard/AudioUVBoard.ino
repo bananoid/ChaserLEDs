@@ -19,6 +19,8 @@ AudioControlSGTL5000 sgtl5000_1; //xy=736,779
 
 #include "AudioOutputs.h"
 
+#include "UVLightManager.h"
+
 float lowBand = 0;
 float midBand = 0;
 float hiBand = 0;
@@ -41,6 +43,8 @@ int micGainValue = 0;
 long deltaTime = 0;
 unsigned long lastTime;
 
+UVLightManager uvLightManager;
+
 void setup()
 {
   pinMode(AUDIO_OUT_CLOCK_PIN, OUTPUT);
@@ -59,6 +63,8 @@ void setup()
   delay(1000);
 
   lastTime = micros();
+
+  uvLightManager.begin();
 }
 
 void loop()
@@ -82,7 +88,18 @@ void loop()
   analogWrite(AUDIO_OUT_MID_PIN, lowBand * 255);
   analogWrite(AUDIO_OUT_LOW_PIN, hiBand * 255);
 
-  kickTrig = lowBand > kickThreshold * 1.5;
+  if (lowBand > kickThreshold * 1.5)
+  {
+    if (!kickTrig)
+    {
+      kickTrig = true;
+      uvLightManager.clockTick();
+    }
+  }
+  else
+  {
+    kickTrig = false;
+  }
   hihatTrig = hiBand > hihatThreshold * 1.5;
 
   kickThreshold += (lowBand - kickThreshold) * kickThresholdFilterSpeed * deltaTime;
