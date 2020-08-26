@@ -14,8 +14,6 @@ SceneManager::SceneManager(CRGB *leds)
   pinMode(SCENE_SELECT_1_BUTTON_PIN, INPUT_PULLUP);
   pinMode(SCENE_SELECT_2_BUTTON_PIN, INPUT_PULLUP);
 
-  pinMode(SCENE_DEBUG_LED_PIN, OUTPUT);
-
   // Initialize Strips
 
   for (int i = 0; i < NUM_STRIPS; i++)
@@ -86,19 +84,6 @@ void SceneManager::update(float deltaTime)
 
 void SceneManager::checkButtonsState()
 {
-
-  if (
-      !digitalRead(SCENE_AUTO_BUTTON_PIN) ||
-      !digitalRead(SCENE_SELECT_1_BUTTON_PIN) ||
-      !digitalRead(SCENE_SELECT_2_BUTTON_PIN))
-  {
-    digitalWrite(SCENE_DEBUG_LED_PIN, true);
-  }
-  else
-  {
-    digitalWrite(SCENE_DEBUG_LED_PIN, false);
-  }
-
   if (!digitalRead(SCENE_AUTO_BUTTON_PIN) && selectionMode != AUTO)
   {
     Serial.println("AUTO");

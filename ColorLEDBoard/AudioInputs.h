@@ -65,10 +65,10 @@ public:
     pinMode(AUDIO_IN_MID_PIN, INPUT);
     pinMode(AUDIO_IN_HIGH_PIN, INPUT);
 
-    pinMode(AUDIO_DEBUG_CLOCK_LED_PIN, OUTPUT);
-    pinMode(AUDIO_DEBUG_LOW_LED_PIN, OUTPUT);
-    pinMode(AUDIO_DEBUG_MID_LED_PIN, OUTPUT);
-    pinMode(AUDIO_DEBUG_HIGH_LED_PIN, OUTPUT);
+    pinMode(AUDIO_DEBUG_WHITE_LED_PIN, OUTPUT);
+    pinMode(AUDIO_DEBUG_WHITE_BOARD_LED_PIN, OUTPUT);
+    pinMode(AUDIO_DEBUG_RED_LED_PIN, OUTPUT);
+    pinMode(AUDIO_DEBUG_BLUE_LED_PIN, OUTPUT);
 
     attachInterrupt(AUDIO_IN_CLOCK_PIN, kickTrig_outer, RISING);
   }
@@ -110,9 +110,9 @@ public:
 
       // Serial.println(clockDeltaTime);
 
-      digitalWrite(AUDIO_DEBUG_CLOCK_LED_PIN, true);
+      digitalWrite(AUDIO_DEBUG_WHITE_LED_PIN, true);
       delay(10);
-      digitalWrite(AUDIO_DEBUG_CLOCK_LED_PIN, false);
+      digitalWrite(AUDIO_DEBUG_WHITE_LED_PIN, false);
     }
   }
   void breakDownStartTimeout()
@@ -160,18 +160,22 @@ public:
     // analogWrite(AUDIO_DEBUG_MID_LED_PIN, mid * 255);
     // analogWrite(AUDIO_DEBUG_HIGH_LED_PIN, hight * 255);
 
-    analogWrite(AUDIO_DEBUG_LOW_LED_PIN, breakDownLevel * 255);
     // digitalWrite(AUDIO_DEBUG_HIGH_LED_PIN, onBreakDown);
 
     // Peak form mid
     mid = (analogRead(AUDIO_IN_MID_PIN) - 80.0) / 944.0;
+    mid = GFXUtils::clamp(mid, 0, 1);
 
     midFilterVal += (mid - midFilterVal) * midFilterSpeed * deltaTime;
 
     // Serial.println(analogRead(AUDIO_IN_MID_PIN));
 
-    analogWrite(AUDIO_DEBUG_HIGH_LED_PIN, mid * 255);
-    analogWrite(AUDIO_DEBUG_MID_LED_PIN, midFilterVal * 255);
+    // analogWrite(AUDIO_DEBUG_BLUE_LED_PIN, mid * 255);
+    // analogWrite(AUDIO_DEBUG_RED_LED_PIN, midFilterVal * 255);
+
+    analogWrite(AUDIO_DEBUG_BLUE_LED_PIN, mid * 255);
+    analogWrite(AUDIO_DEBUG_RED_LED_PIN, midFilterVal * 255);
+    // analogWrite(AUDIO_DEBUG_BLUE_LED_PIN, analogRead(AUDIO_IN_MID_PIN) / 4);
   }
 };
 
