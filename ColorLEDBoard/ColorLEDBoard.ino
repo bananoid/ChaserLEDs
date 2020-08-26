@@ -27,6 +27,7 @@ void clearAll()
 
 void setup()
 {
+  randomSeed(analogRead(0));
 
   delay(500);
   Serial.begin(9600);
