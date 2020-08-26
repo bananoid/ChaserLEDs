@@ -3,6 +3,7 @@
 
 LEDShader::LEDShader()
 {
+  position = random(100000) / 1000.0;
 }
 
 void LEDShader::update(Strip *strip, float deltaTime)

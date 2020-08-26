@@ -4,6 +4,10 @@
 #include "Compositions/Rain.h"
 #include "Compositions/SimpleColor.h"
 #include "Compositions/Test.h"
+#include "Compositions/Waves.h"
+#include "Compositions/Noise.h"
+#include "Compositions/Chaser01.h"
+#include "Compositions/Waves2.h"
 #include "GFXUtils.h"
 
 SceneManager::SceneManager(CRGB *leds)
@@ -28,12 +32,15 @@ SceneManager::SceneManager(CRGB *leds)
 
   allCompositions = LinkedList<Composition *>();
 
-  allCompositions.add(new Test());
-
-  allCompositions.add(new SimpleColor(CHSV(0, 0, 255)));
-  allCompositions.add(new SimpleColor(CHSV(0, 255, 255)));
-  allCompositions.add(new Vein());
-  allCompositions.add(new Rain());
+  allCompositions.add(new Test());                         // 0
+  allCompositions.add(new SimpleColor(CHSV(0, 0, 255)));   // 1
+  allCompositions.add(new SimpleColor(CHSV(0, 255, 255))); // 2
+  allCompositions.add(new Vein());                         // 3
+  allCompositions.add(new Rain());                         // 4
+  allCompositions.add(new Waves());                        // 5
+  allCompositions.add(new Noise());                        // 6
+  allCompositions.add(new Chaser01());                     // 7
+  allCompositions.add(new Waves2());                       // 8
 
   for (int i = 0; i < SCENE_FUNCTION_COUNT; i++)
   {
@@ -66,10 +73,10 @@ void SceneManager::update(float deltaTime)
 
   if (MasterAudioInput.onBreakDown)
   {
-    currentScene->speedOffset = GFXUtils::clamp(MasterAudioInput.breakDownFadeValue * 0.7 + 0.3, 0.3, 1);
-    currentScene->speedOffset += GFXUtils::clamp(MasterAudioInput.midFilterVal * 5 + 0.4, 0, 1);
+    currentScene->speedOffset = MasterAudioInput.breakDownFadeValue * 0.4 + 0.4;
+    // currentScene->speedOffset += GFXUtils::clamp(MasterAudioInput.midFilterVal * 5 + 0.4, 0, 1);
 
-    currentScene->hueOffset = (1 - MasterAudioInput.breakDownFadeValue) * 140;
+    currentScene->hueOffset = (1 - MasterAudioInput.breakDownFadeValue) * 20;
 
     currentScene->scaleOffset = MasterAudioInput.breakDownFadeValue * 1.2 + 0.3;
 
@@ -233,7 +240,7 @@ Scene *SceneManager::createTechnoScene(bool breakDown)
   }
   else
   {
-    scene->addComposition(allCompositions.get(2));
+    scene->addComposition(allCompositions.get(8));
 
     scene->applyOperation(SOP_Sorted);
 
