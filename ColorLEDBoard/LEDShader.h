@@ -31,7 +31,7 @@ public:
   float hueWithOffset = 0;
   float saturation = 255;
   float brightness = 255;
-
+  
   LEDShader();
   virtual void update(Strip *strip, float deltaTime);
   virtual void blend(CRGB *leds, int ledInx, CRGB color);

@@ -17,7 +17,7 @@ public:
     {
 
       color = CHSV(hueWithOffset, saturation, 255);
-
+      
       blend(strip->leds, i, color);
     }
   }

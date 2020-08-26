@@ -4,9 +4,64 @@
 #include <Arduino.h>
 #include <FastLED.h>
 
+struct fRGB
+{
+  float r = 1;
+  float g = 1;
+  float b = 1;
+};
+
 class GFXUtils
 {
 public:
+  CRGB palette[256];
+
+  GFXUtils()
+  {
+    // Rainbow
+    // fRGB a = {0.5, 0.5, 0.5};
+    // fRGB b = {0.5, 0.5, 0.5};
+    // fRGB c = {1.0, 1.0, 1.0};
+    // fRGB d = {0.0, 0.33, 0.67};
+
+    fRGB a = {1.00, 0.00, 0.40};
+    fRGB b = {1.00, 0.78, 0.42};
+    fRGB c = {1.00, 0.47, 0.84};
+    fRGB d = {1.00, 0.64, 0.49};
+
+    float t;
+
+    for (int i = 0; i < 256; i++)
+    {
+      t = i / 256.0;
+      fRGB color = cosinePalette(t, a, b, c, d);
+      palette[i].r = color.r * 255;
+      palette[i].g = color.g * 255;
+      palette[i].b = color.b * 255;
+    }
+  }
+
+  CRGB getPaletteColor(int t)
+  {
+    t = t % 256;
+    if (t < 0)
+    {
+      t = 256 + t;
+    }
+    return palette[t];
+  }
+
+  static fRGB cosinePalette(float t, fRGB a, fRGB b, fRGB c, fRGB d)
+  {
+    fRGB color;
+
+    color.r = a.r + b.r * cosf(TWO_PI * (c.r * t + d.r));
+    color.g = a.g + b.g * cosf(TWO_PI * (c.g * t + d.g));
+    color.b = a.b + b.b * cosf(TWO_PI * (c.b * t + d.b));
+
+    return color;
+  }
+
   static float fract(float x)
   {
     return x - ((int)x);
@@ -115,5 +170,7 @@ public:
     return (sinf(2.0 * x) + sinf(PI * x)) * 0.5 + 0.5;
   }
 };
+
+extern GFXUtils GFXUtilsSingleton;
 
 #endif

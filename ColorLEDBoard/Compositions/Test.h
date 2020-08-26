@@ -8,6 +8,7 @@
 #include "../Shaders/ShaderFM.h"
 #include "../Shaders/ShaderSawFM.h"
 #include "../Shaders/ShaderSimpleColor.h"
+#include "../Shaders/ShaderPaletteTest.h"
 
 class Test : public Composition
 {
@@ -15,6 +16,16 @@ public:
   Test()
   {
     LEDShader *shader;
+
+    // shader = new ShaderPaletteTest();
+    // shader->blendingMode = BACKGROUND;
+    // shader->scale = 1.0;
+    // shader->speed = 1.0;
+    // shader->density = 0.0;
+    // shader->hue = 10;
+    // shader->saturation = 255;
+    // shader->brightness = 255;
+    // addShader(shader);
 
     shader = new ShaderSawFM();
     shader->blendingMode = BACKGROUND;
