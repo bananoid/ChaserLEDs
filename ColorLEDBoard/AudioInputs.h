@@ -110,7 +110,7 @@ public:
     }
   }
   void breakDownStartTimeout()
-  { 
+  {
     breakDownTimer.end();
     onBreakDown = true;
 
@@ -143,7 +143,6 @@ public:
     // float highFilterSpeed = 0.7;
 
     low += (digitalRead(AUDIO_IN_LOW_PIN) - low) * lowFilterSpeed;
-    mid += (digitalRead(AUDIO_IN_MID_PIN) - mid) * midFilterSpeed;
     // hight += (digitalRead(AUDIO_IN_HIGH_PIN) - hight) * highFilterSpeed;
     hight = digitalRead(AUDIO_IN_HIGH_PIN);
 
@@ -159,8 +158,11 @@ public:
     // analogWrite(AUDIO_DEBUG_HIGH_LED_PIN, hight * 255);
 
     analogWrite(AUDIO_DEBUG_LOW_LED_PIN, breakDownLevel * 255);
-    analogWrite(AUDIO_DEBUG_MID_LED_PIN, breakDownFadeValue * 255);
     digitalWrite(AUDIO_DEBUG_HIGH_LED_PIN, onBreakDown);
+
+    // Peak
+    mid += (digitalRead(AUDIO_IN_MID_PIN) - mid) * midFilterSpeed;
+    analogWrite(AUDIO_DEBUG_MID_LED_PIN, mid * 255);
   }
 };
 

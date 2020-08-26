@@ -4,6 +4,7 @@
 #include "Compositions/Rain.h"
 #include "Compositions/SimpleColor.h"
 #include "Compositions/Test.h"
+#include "GFXUtils.h"
 
 SceneManager::SceneManager(CRGB *leds)
 {
@@ -69,9 +70,9 @@ void SceneManager::update(float deltaTime)
   if (MasterAudioInput.onBreakDown)
   {
     currentScene->speedOffset = 0.05 + MasterAudioInput.breakDownFadeValue;
-    // currentScene->intencityMult = 1-MasterAudioInput.b(MasterAudioInput.mid * 10 + 0.3);
     currentScene->hueOffset = (1 - MasterAudioInput.breakDownFadeValue) * 140;
   }
+  currentScene->intencityMult = GFXUtils::clamp(MasterAudioInput.mid * 2 + 0.3, 0, 1);
 
   currentScene->update(deltaTime);
 }

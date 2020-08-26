@@ -45,6 +45,9 @@ unsigned long lastTime;
 
 UVLightManager uvLightManager;
 
+float midFilterValue = 0;
+float midFilterSpeed = 0.0001;
+
 void setup()
 {
   pinMode(AUDIO_OUT_CLOCK_PIN, OUTPUT);
@@ -76,16 +79,23 @@ void loop()
   if (fft1024_1.available())
   {
     lowBand = fft1024_1.read(1, 3);
-    midBand = fft1024_1.read(4, 511);
+    midBand = fft1024_1.read(1, 511);
     hiBand = fft1024_1.read(150, 300);
 
     lowBand = powf(lowBand * 1.5, 8);
-    midBand = powf(midBand, 2) * 200;
+    // midBand = midBand;
+    midBand = powf(midBand * 1.1, 2) - 0.15;
+    midBand = fmax(midBand, 0.0);
+    midBand = fmin(midBand, 1.0);
+    // midBand = powf(midBand - 1, 3) + 1;
+
     hiBand = powf(hiBand * 1.5, 8);
   }
 
+  midFilterValue += (midBand - midFilterValue) * midFilterSpeed * deltaTime;
+
   // analogWrite(AUDIO_OUT_HIGH_PIN, midBand * 255);
-  analogWrite(AUDIO_OUT_MID_PIN, lowBand * 255);
+  analogWrite(AUDIO_OUT_MID_PIN, midFilterValue * 255);
   analogWrite(AUDIO_OUT_LOW_PIN, hiBand * 255);
 
   if (lowBand > kickThreshold * 1.5)
@@ -125,10 +135,5 @@ void loop()
   {
     micGainValue = gainValue;
     sgtl5000_1.micGain(micGainValue);
-  }
-
-  if (curTime / 100000 % 2 == 0)
-  {
-    Serial.println(kickThreshold);
   }
 }
