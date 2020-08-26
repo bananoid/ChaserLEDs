@@ -45,9 +45,6 @@ unsigned long lastTime;
 
 UVLightManager uvLightManager;
 
-float midFilterValue = 0;
-float midFilterSpeed = 0.0001;
-
 void setup()
 {
   pinMode(AUDIO_OUT_CLOCK_PIN, OUTPUT);
@@ -92,10 +89,8 @@ void loop()
     hiBand = powf(hiBand * 1.5, 8);
   }
 
-  midFilterValue += (midBand - midFilterValue) * midFilterSpeed * deltaTime;
-
   // analogWrite(AUDIO_OUT_HIGH_PIN, midBand * 255);
-  analogWrite(AUDIO_OUT_MID_PIN, midFilterValue * 255);
+  analogWrite(AUDIO_OUT_MID_PIN, midBand * 255);
   analogWrite(AUDIO_OUT_LOW_PIN, hiBand * 255);
 
   if (lowBand > kickThreshold * 1.5)

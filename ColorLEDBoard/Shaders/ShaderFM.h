@@ -17,7 +17,7 @@ public:
     CRGB color;
 
     float oscA, oscB;
-    float den = density * densityOffset;
+    float den = density + densityOffset;
 
     for (int i = strip->startInx; i < strip->numOfLed + strip->startInx; i++)
     {

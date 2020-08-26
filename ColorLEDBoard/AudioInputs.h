@@ -6,6 +6,7 @@
 #include <IntervalTimer.h>
 
 #include "config.h"
+#include "GFXUtils.h"
 class AudioInputs;
 
 class AudioInputsDelegate
@@ -162,7 +163,12 @@ public:
     digitalWrite(AUDIO_DEBUG_HIGH_LED_PIN, onBreakDown);
 
     // Peak
-    mid += (digitalRead(AUDIO_IN_MID_PIN) - mid) * midFilterSpeed * deltaTime;
+    // mid += (analogRead(AUDIO_IN_MID_PIN) - 100) / 1024.0 - mid) * midFilterSpeed * deltaTime;
+    mid = (analogRead(AUDIO_IN_MID_PIN) - 80.0) / 944.0;
+    mid = GFXUtils::clamp(mid, 0, 1);
+
+    // Serial.println(analogRead(AUDIO_IN_MID_PIN));
+
     analogWrite(AUDIO_DEBUG_MID_LED_PIN, mid * 255);
   }
 };

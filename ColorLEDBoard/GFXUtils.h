@@ -19,7 +19,7 @@ public:
 
   static float clamp(float x, float minV, float maxV)
   {
-    return min(max(x, minV), maxV);
+    return fmin(fmax(x, minV), maxV);
   }
 
   static float mix(float a, float b, float t)

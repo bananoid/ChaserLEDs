@@ -7,6 +7,7 @@
 #include "../Shaders/ShaderBreathing.h"
 #include "../Shaders/ShaderFM.h"
 #include "../Shaders/ShaderSawFM.h"
+#include "../Shaders/ShaderSimpleColor.h"
 
 class Test : public Composition
 {

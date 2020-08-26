@@ -76,7 +76,10 @@ void SceneManager::update(float deltaTime)
 
     currentScene->scaleOffset = GFXUtils::clamp((MasterAudioInput.breakDownFadeValue) * 1.2 + 0.3, 0, 1);
   }
-  currentScene->intencityMult = GFXUtils::clamp(MasterAudioInput.mid * 2 + 0.4, 0, 1);
+  currentScene->intencityMult = GFXUtils::clamp(MasterAudioInput.mid, 0, 1);
+
+  currentScene->densityOffset = 0;
+  // currentScene->densityOffset = (1 - GFXUtils::clamp(MasterAudioInput.mid * 10, 0, 1)) * -10;
 
   currentScene->update(deltaTime);
 }
