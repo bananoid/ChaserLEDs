@@ -65,8 +65,13 @@ void SceneManager::update(float deltaTime)
     return;
   }
 
-  // currentScene->intencityMult = MasterAudioInput.mid * 2 + 0.1;
   // currentScene->speedOffset = 0.5 + MasterAudioInput.low * 2;
+  if (MasterAudioInput.onBreakDown)
+  {
+    currentScene->speedOffset = 0.1 + MasterAudioInput.breakDownFadeValue * 2;
+    // currentScene->intencityMult = 1-MasterAudioInput.b(MasterAudioInput.mid * 10 + 0.3);
+    currentScene->hueOffset = (1 - MasterAudioInput.breakDownFadeValue) * 140;
+  }
 
   currentScene->update(deltaTime);
 }
@@ -235,11 +240,7 @@ Scene *SceneManager::createTechnoScene(bool breakDown)
   }
   else
   {
-    scene->addComposition(new SimpleColor(CHSV(140, 0, 255)));
-    scene->addComposition(new SimpleColor(CHSV(130, 0, 255)));
-    scene->addComposition(new SimpleColor(CHSV(140, 255, 255)));
-
-    scene->speedOffset = 0.1;
+    scene->addComposition(allCompositions.get(2));
 
     scene->applyOperation(SOP_Sorted);
 

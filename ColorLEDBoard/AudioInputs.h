@@ -33,7 +33,9 @@ public:
   float breakDownLevel = 0;
   float breakDownDecaySpeed = 0.035;
   float breakDownFadeValue = 0;
-  float breakDownFadeSpeed = 0.001;
+  float breakDownFadeSpeed = 0.0000002;
+  float breakDownEndFadeSpeed = 0.00001;
+
   bool onBreakDown = false;
 
   // bool clockIn = false;
@@ -99,6 +101,7 @@ public:
         delegate->breakDownBegin();
         breakDownFadeValue = 1;
       }
+      breakDownFadeValue += (0 - breakDownFadeValue) * breakDownFadeSpeed * deltaTime;
     }
     else
     {
@@ -107,6 +110,7 @@ public:
         onBreakDown = false;
         delegate->breakDownEnd();
       }
+      breakDownFadeValue += (1 - breakDownFadeValue) * breakDownEndFadeSpeed * deltaTime;
     }
 
     float lowFilterSpeed = 0.7;
@@ -118,8 +122,6 @@ public:
     // hight += (digitalRead(AUDIO_IN_HIGH_PIN) - hight) * highFilterSpeed;
     hight = digitalRead(AUDIO_IN_HIGH_PIN);
 
-    breakDownFadeValue += (-breakDownFadeValue) * breakDownFadeSpeed * deltaTime;
-
     // if (curTime / 400000 % 2 == 0)
     // {
     //   Serial.print(bdDeacay);
@@ -128,10 +130,11 @@ public:
     // }
 
     // analogWrite(AUDIO_DEBUG_LOW_LED_PIN, low * 255);
-    analogWrite(AUDIO_DEBUG_MID_LED_PIN, mid * 255);
+    // analogWrite(AUDIO_DEBUG_MID_LED_PIN, mid * 255);
     // analogWrite(AUDIO_DEBUG_HIGH_LED_PIN, hight * 255);
 
     analogWrite(AUDIO_DEBUG_LOW_LED_PIN, breakDownLevel * 255);
+    analogWrite(AUDIO_DEBUG_MID_LED_PIN, breakDownFadeValue * 255);
     digitalWrite(AUDIO_DEBUG_HIGH_LED_PIN, onBreakDown);
   }
 };
