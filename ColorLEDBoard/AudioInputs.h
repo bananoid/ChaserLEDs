@@ -45,6 +45,8 @@ public:
   double lowFilterSpeed = 0.0007;
   double midFilterSpeed = 0.000004;
 
+  double midFilterVal = 0;
+
   bool onBreakDown = false;
 
   // bool clockIn = false;
@@ -162,10 +164,11 @@ public:
     analogWrite(AUDIO_DEBUG_LOW_LED_PIN, breakDownLevel * 255);
     digitalWrite(AUDIO_DEBUG_HIGH_LED_PIN, onBreakDown);
 
-    // Peak
-    // mid += (analogRead(AUDIO_IN_MID_PIN) - 100) / 1024.0 - mid) * midFilterSpeed * deltaTime;
+    // Peak form mid
     mid = (analogRead(AUDIO_IN_MID_PIN) - 80.0) / 944.0;
     mid = GFXUtils::clamp(mid, 0, 1);
+
+    midFilterVal += (mid - midFilterVal) / midFilterSpeed * deltaTime;
 
     // Serial.println(analogRead(AUDIO_IN_MID_PIN));
 
