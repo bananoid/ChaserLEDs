@@ -21,19 +21,19 @@ AudioControlSGTL5000 sgtl5000_1; //xy=736,779
 
 #include "UVLightManager.h"
 
-float lowBand = 0;
-float midBand = 0;
-float hiBand = 0;
+double lowBand = 0;
+double midBand = 0;
+double hiBand = 0;
 
 int kickDebounceTime = 100;
 
-float kickThreshold = 0.5;
-float kickThresholdFilterSpeed = 0.000004; // 0.00001;
-float kickMinThreshold = 5;
+double kickThreshold = 0.5;
+double kickThresholdFilterSpeed = 0.0002; // 0.00001;
+double kickMinThreshold = 5;
 
-float hihatThreshold = 0.5;
-float hihatThresholdFilterSpeed = 0.000004; // 0.00001;
-float hihatMinThreshold = 0.3;
+double hihatThreshold = 0.5;
+double hihatThresholdFilterSpeed = 0.0002; // 0.00001;
+double hihatMinThreshold = 0.3;
 
 bool kickTrig = false;
 bool hihatTrig = false;
@@ -79,7 +79,7 @@ void loop()
     midBand = fft1024_1.read(1, 511);
     hiBand = fft1024_1.read(150, 300);
 
-    lowBand = powf(lowBand * 1.5, 8);
+    lowBand = powf(lowBand * 2, 9);
     // midBand = midBand;
     midBand = powf(midBand * 1.1, 2) - 0.15;
     midBand = fmax(midBand, 0.0);
@@ -93,7 +93,7 @@ void loop()
   analogWrite(AUDIO_OUT_MID_PIN, midBand * 255);
   analogWrite(AUDIO_OUT_LOW_PIN, hiBand * 255);
 
-  if (lowBand > kickThreshold * 1.5)
+  if (lowBand > kickThreshold)
   {
     if (!kickTrig)
     {
@@ -107,14 +107,14 @@ void loop()
   }
   hihatTrig = hiBand > hihatThreshold * 1.5;
 
-  kickThreshold += (lowBand - kickThreshold) * kickThresholdFilterSpeed * deltaTime;
+  kickThreshold += (lowBand - kickThreshold) * kickThresholdFilterSpeed;
   kickThreshold = max(kickThreshold, kickMinThreshold);
 
   if (kickTrig)
   {
     hihatTrig = false;
   }
-  hihatThreshold += (hiBand - hihatThreshold) * hihatThresholdFilterSpeed * deltaTime;
+  hihatThreshold += (hiBand - hihatThreshold) * hihatThresholdFilterSpeed;
   hihatThreshold = max(hihatThreshold, hihatMinThreshold);
 
   digitalWrite(AUDIO_OUT_CLOCK_PIN, kickTrig);
