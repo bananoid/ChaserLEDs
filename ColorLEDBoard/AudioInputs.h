@@ -18,12 +18,17 @@ public:
 
 #define CLOCK_DEBOUNCE_TIME 62000 // 200000
 
+#define CLOCK_MAX_BPM 600000   // 100 bpm
+#define CLOCK_START_BPM 500000 // 120 bpm = 1000000 /(120 / 60)
+#define CLOCK_MIN_BPM 300000   // 200 bpm
+
 static void kickTrig_outer();
+static void breakDownStartTimeout_outer();
 
 class AudioInputs
 {
 private:
-  IntervalTimer timer;
+  IntervalTimer breakDownTimer;
 
 public:
   float low = 0;
@@ -44,6 +49,9 @@ public:
 
   AudioInputsDelegate *delegate;
 
+  long lastKickDeltaTime = CLOCK_START_BPM;
+  long clockDeltaTime = CLOCK_START_BPM;
+
   AudioInputs()
   {
     pinMode(AUDIO_IN_CLOCK_PIN, INPUT);
@@ -56,15 +64,14 @@ public:
     pinMode(AUDIO_DEBUG_MID_LED_PIN, OUTPUT);
     pinMode(AUDIO_DEBUG_HIGH_LED_PIN, OUTPUT);
 
-    // timer.begin(kickTrig_outer, 10000);
-
     attachInterrupt(AUDIO_IN_CLOCK_PIN, kickTrig_outer, RISING);
   }
 
   void kickTrig()
   {
     unsigned long curTime = micros();
-    long clockDeltaTime = curTime - lastClockInTime;
+
+    clockDeltaTime = curTime - lastClockInTime;
 
     bool clockIn = digitalRead(AUDIO_IN_CLOCK_PIN);
 
@@ -76,12 +83,41 @@ public:
         delegate->audioClockTick();
       }
       breakDownLevel = 1;
+
       digitalWrite(AUDIO_DEBUG_CLOCK_LED_PIN, true);
       delay(10);
       digitalWrite(AUDIO_DEBUG_CLOCK_LED_PIN, false);
+
+      if (onBreakDown)
+      {
+        onBreakDown = false;
+        delegate->breakDownEnd();
+      }
+
+      if (clockDeltaTime > CLOCK_MIN_BPM && clockDeltaTime < CLOCK_MAX_BPM)
+      {
+        lastKickDeltaTime = clockDeltaTime;
+      }
+
+      if (clockDeltaTime > CLOCK_MIN_BPM)
+      {
+        breakDownTimer.begin(breakDownStartTimeout_outer, lastKickDeltaTime * 2);
+        Serial.print("start Time out ");
+        Serial.println(lastKickDeltaTime);
+      }
+
+      Serial.println(clockDeltaTime);
     }
   }
+  void breakDownStartTimeout()
+  { 
+    breakDownTimer.end();
+    onBreakDown = true;
 
+    delegate->breakDownBegin();
+
+    breakDownFadeValue = 1;
+  }
   void update()
   {
     unsigned long curTime = micros();
@@ -93,23 +129,12 @@ public:
     breakDownLevel -= bdDeacay;
     breakDownLevel = max(0, breakDownLevel);
 
-    if (breakDownLevel <= 0.0)
+    if (onBreakDown)
     {
-      if (!onBreakDown)
-      {
-        onBreakDown = true;
-        delegate->breakDownBegin();
-        breakDownFadeValue = 1;
-      }
       breakDownFadeValue += (0 - breakDownFadeValue) * breakDownFadeSpeed * deltaTime;
     }
     else
     {
-      if (onBreakDown)
-      {
-        onBreakDown = false;
-        delegate->breakDownEnd();
-      }
       breakDownFadeValue += (1 - breakDownFadeValue) * breakDownEndFadeSpeed * deltaTime;
     }
 
@@ -144,6 +169,10 @@ extern AudioInputs MasterAudioInput;
 static void kickTrig_outer()
 {
   MasterAudioInput.kickTrig();
+}
+static void breakDownStartTimeout_outer()
+{
+  MasterAudioInput.breakDownStartTimeout();
 }
 
 #endif

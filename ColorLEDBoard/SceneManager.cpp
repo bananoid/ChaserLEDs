@@ -68,7 +68,7 @@ void SceneManager::update(float deltaTime)
   // currentScene->speedOffset = 0.5 + MasterAudioInput.low * 2;
   if (MasterAudioInput.onBreakDown)
   {
-    currentScene->speedOffset = 0.1 + MasterAudioInput.breakDownFadeValue * 2;
+    currentScene->speedOffset = 0.05 + MasterAudioInput.breakDownFadeValue;
     // currentScene->intencityMult = 1-MasterAudioInput.b(MasterAudioInput.mid * 10 + 0.3);
     currentScene->hueOffset = (1 - MasterAudioInput.breakDownFadeValue) * 140;
   }
