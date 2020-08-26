@@ -69,10 +69,14 @@ void SceneManager::update(float deltaTime)
   // currentScene->speedOffset = 0.5 + MasterAudioInput.low * 2;
   if (MasterAudioInput.onBreakDown)
   {
-    currentScene->speedOffset = 0.05 + MasterAudioInput.breakDownFadeValue;
+    currentScene->speedOffset = GFXUtils::clamp(MasterAudioInput.breakDownFadeValue * 0.7 + 0.3, 0, 1);
+    currentScene->speedOffset += GFXUtils::clamp(MasterAudioInput.mid * 1 + 0.4, 0, 1);
+
     currentScene->hueOffset = (1 - MasterAudioInput.breakDownFadeValue) * 140;
+
+    currentScene->scaleOffset = GFXUtils::clamp((MasterAudioInput.breakDownFadeValue) * 1.2 + 0.3, 0, 1);
   }
-  currentScene->intencityMult = GFXUtils::clamp(MasterAudioInput.mid * 2 + 0.3, 0, 1);
+  currentScene->intencityMult = GFXUtils::clamp(MasterAudioInput.mid * 2 + 0.4, 0, 1);
 
   currentScene->update(deltaTime);
 }
@@ -193,6 +197,8 @@ void SceneManager::setCurrentSceneInx(int inx)
   {
     currentScene = MasterAudioInput.onBreakDown ? ambientSceneBreakDown : ambientSceneBeat;
   }
+
+  currentScene->nextStep();
 }
 
 void SceneManager::setNextScene()
@@ -245,8 +251,7 @@ Scene *SceneManager::createTechnoScene(bool breakDown)
 
     scene->applyOperation(SOP_Sorted);
 
-    scene->addTimelineOperation(8, SOP_Random);
-    scene->addTimelineOperation(1, SOP_RandomSpeed);
+    scene->addTimelineOperation(1, SOP_Random);
     scene->addTimelineOperation(1, SOP_ShiftFW);
 
     scene->isMirrored = false;

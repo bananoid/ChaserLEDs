@@ -31,15 +31,18 @@ private:
   IntervalTimer breakDownTimer;
 
 public:
-  float low = 0;
-  float mid = 0;
-  float hight = 0;
+  double low = 0;
+  double mid = 0;
+  double hight = 0;
 
-  float breakDownLevel = 0;
-  float breakDownDecaySpeed = 0.035;
-  float breakDownFadeValue = 0;
-  float breakDownFadeSpeed = 0.0000002;
-  float breakDownEndFadeSpeed = 0.00001;
+  double breakDownLevel = 0;
+  double breakDownDecaySpeed = 0.035;
+  double breakDownFadeValue = 0;
+  double breakDownFadeSpeed = 0.0000002;
+  double breakDownEndFadeSpeed = 0.00001;
+
+  double lowFilterSpeed = 0.0007;
+  double midFilterSpeed = 0.000004;
 
   bool onBreakDown = false;
 
@@ -138,11 +141,9 @@ public:
       breakDownFadeValue += (1 - breakDownFadeValue) * breakDownEndFadeSpeed * deltaTime;
     }
 
-    float lowFilterSpeed = 0.7;
-    float midFilterSpeed = 0.1;
     // float highFilterSpeed = 0.7;
 
-    low += (digitalRead(AUDIO_IN_LOW_PIN) - low) * lowFilterSpeed;
+    low += (digitalRead(AUDIO_IN_LOW_PIN) - low) * lowFilterSpeed * deltaTime;
     // hight += (digitalRead(AUDIO_IN_HIGH_PIN) - hight) * highFilterSpeed;
     hight = digitalRead(AUDIO_IN_HIGH_PIN);
 
@@ -161,7 +162,7 @@ public:
     digitalWrite(AUDIO_DEBUG_HIGH_LED_PIN, onBreakDown);
 
     // Peak
-    mid += (digitalRead(AUDIO_IN_MID_PIN) - mid) * midFilterSpeed;
+    mid += (digitalRead(AUDIO_IN_MID_PIN) - mid) * midFilterSpeed * deltaTime;
     analogWrite(AUDIO_DEBUG_MID_LED_PIN, mid * 255);
   }
 };

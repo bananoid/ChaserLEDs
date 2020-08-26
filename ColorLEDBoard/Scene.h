@@ -40,6 +40,8 @@ public:
   float intencityMult = 1;
   float speed = 1;
   float speedOffset = 1;
+  float scaleOffset = 1;
+  float densityOffset = 1;
   float hueOffset = 0;
 
   Scene(Strip **strips);

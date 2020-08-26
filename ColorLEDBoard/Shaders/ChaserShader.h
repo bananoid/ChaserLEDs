@@ -15,12 +15,14 @@ public:
     float value;
     float x;
     CRGB color;
+
+    float den = density * densityOffset;
+
     for (int i = strip->startInx; i < strip->numOfLed + strip->startInx; i++)
     {
+      x = this->position + i * scale * scaleOffset;
 
-      x = this->position + i * scale;
-
-      intensity = GFXUtils::chaserNoise(x, density);
+      intensity = GFXUtils::chaserNoise(x, den);
 
       value = intensity * brightness;
       color = CHSV(hueWithOffset, saturation, value);

@@ -19,6 +19,9 @@ void Composition::update(Strip *strip, float deltaTime)
     shader->brightness = 255 * intencityMult;
     shader->speedOffset = speedOffset;
     shader->hueOffset = hueOffset;
+    shader->scaleOffset = scaleOffset;
+    shader->densityOffset = densityOffset;
+
     shader->update(strip, deltaTime);
   }
 }

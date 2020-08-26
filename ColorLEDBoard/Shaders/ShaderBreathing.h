@@ -15,13 +15,15 @@ public:
     float value;
     float x;
     CRGB color;
+
+    float den = density * densityOffset;
     for (int i = strip->startInx; i < strip->numOfLed + strip->startInx; i++)
     {
 
-      x = (this->position + i) * scale;
+      x = (this->position + i) * scale * scaleOffset;
 
       intensity = sinf(fmod(x, TWO_PI)) * 0.5 + 0.5;
-      intensity = intensity * (1.0 - density) + density;
+      intensity = intensity * (1.0 - den) + den;
 
       value = intensity * brightness;
       color = CHSV(hueWithOffset, saturation, value);

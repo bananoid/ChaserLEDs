@@ -19,6 +19,8 @@ public:
   float intencityMult = 1;
   float speedOffset = 1;
   float hueOffset = 0;
+  float scaleOffset = 1;
+  float densityOffset = 1;
   virtual void addShader(LEDShader *shader);
   virtual void update(Strip *strip, float deltaTime);
 };

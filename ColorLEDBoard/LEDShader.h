@@ -20,9 +20,11 @@ private:
 public:
   float position = 0;
   BlendingMode blendingMode = NORMAL;
+  float scaleOffset = 1;
   float scale = 1;
   float speed = 1;
   float speedOffset = 1;
+  float densityOffset = 1;
   float density = 1;
   float hue = 255;
   float hueOffset = 0;

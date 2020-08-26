@@ -74,6 +74,8 @@ void Scene::update(float deltaTime)
     comp->intencityMult = intencityMult;
     comp->speedOffset = speed * speedOffset;
     comp->hueOffset = hueOffset;
+    comp->scaleOffset = scaleOffset;
+    comp->densityOffset = densityOffset;
 
     comp->update(strips[i], deltaTime);
   }

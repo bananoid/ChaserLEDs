@@ -11,7 +11,7 @@
 #include "Clock.h"
 #include "AudioInputs.h"
 
-#define SCENE_FUNCTION_COUNT 1
+#define SCENE_FUNCTION_COUNT 10
 
 enum SelectionMode
 {
