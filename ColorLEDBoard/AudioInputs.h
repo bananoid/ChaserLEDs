@@ -90,10 +90,6 @@ public:
       }
       breakDownLevel = 1;
 
-      digitalWrite(AUDIO_DEBUG_CLOCK_LED_PIN, true);
-      delay(10);
-      digitalWrite(AUDIO_DEBUG_CLOCK_LED_PIN, false);
-
       if (onBreakDown)
       {
         onBreakDown = false;
@@ -112,17 +108,20 @@ public:
         Serial.println(lastKickDeltaTime);
       }
 
-      Serial.println(clockDeltaTime);
+      // Serial.println(clockDeltaTime);
+
+      digitalWrite(AUDIO_DEBUG_CLOCK_LED_PIN, true);
+      delay(10);
+      digitalWrite(AUDIO_DEBUG_CLOCK_LED_PIN, false);
     }
   }
   void breakDownStartTimeout()
   {
     breakDownTimer.end();
     onBreakDown = true;
+    breakDownFadeValue = 1;
 
     delegate->breakDownBegin();
-
-    breakDownFadeValue = 1;
   }
   void update()
   {
