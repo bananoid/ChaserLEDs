@@ -38,9 +38,9 @@ SceneManager::SceneManager(CRGB *leds)
   allCompositions.add(new Vein());                         // 3
   allCompositions.add(new Rain());                         // 4
   allCompositions.add(new Waves());                        // 5
-  allCompositions.add(new Noise());                        // 6
-  allCompositions.add(new Chaser01());                     // 7
-  allCompositions.add(new Waves2());                       // 8
+  // allCompositions.add(new Noise());                        // 6
+  allCompositions.add(new Chaser01()); // 7
+  allCompositions.add(new Waves2());   // 8
 
   for (int i = 0; i < SCENE_FUNCTION_COUNT; i++)
   {
@@ -73,14 +73,14 @@ void SceneManager::update(float deltaTime)
 
   if (MasterAudioInput.onBreakDown)
   {
-    currentScene->speedOffset = MasterAudioInput.breakDownFadeValue * 0.4 + 0.4;
+    currentScene->speedOffset = MasterAudioInput.breakDownFadeValue * 0.1 + 0.4;
     // currentScene->speedOffset += GFXUtils::clamp(MasterAudioInput.midFilterVal * 5 + 0.4, 0, 1);
 
     currentScene->hueOffset = (1 - MasterAudioInput.breakDownFadeValue) * 20;
 
-    currentScene->scaleOffset = MasterAudioInput.breakDownFadeValue * 1.2 + 0.3;
+    currentScene->scaleOffset = MasterAudioInput.breakDownFadeValue * 0.2 + 0.8;
 
-    currentScene->intencityMult = GFXUtils::clamp(MasterAudioInput.midFilterVal * 3, 0.5, 1);
+    currentScene->intencityMult = MasterAudioInput.midFilterVal * 0.5 + 0.5;
   }
 
   // currentScene->densityOffset = 0;
@@ -91,29 +91,29 @@ void SceneManager::update(float deltaTime)
 
 void SceneManager::checkButtonsState()
 {
-  if (!digitalRead(SCENE_AUTO_BUTTON_PIN) && selectionMode != AUTO)
-  {
-    Serial.println("AUTO");
-    selectionMode = AUTO;
-    setNextScene();
-    return;
-  }
+  // if (!digitalRead(SCENE_AUTO_BUTTON_PIN) && selectionMode != AUTO)
+  // {
+  //   Serial.println("AUTO");
+  //   selectionMode = AUTO;
+  //   setNextScene();
+  //   return;
+  // }
 
-  if (!digitalRead(SCENE_SELECT_1_BUTTON_PIN) && selectionMode != FIRE)
-  {
-    Serial.println("FIRE");
-    selectionMode = FIRE;
-    setNextScene();
-    return;
-  }
+  // if (!digitalRead(SCENE_SELECT_1_BUTTON_PIN) && selectionMode != FIRE)
+  // {
+  //   Serial.println("FIRE");
+  //   selectionMode = FIRE;
+  //   setNextScene();
+  //   return;
+  // }
 
-  if (!digitalRead(SCENE_SELECT_2_BUTTON_PIN) && selectionMode != AMBIENT)
-  {
-    Serial.println("AMBIENT");
-    selectionMode = AMBIENT;
-    setNextScene();
-    return;
-  }
+  // if (!digitalRead(SCENE_SELECT_2_BUTTON_PIN) && selectionMode != AMBIENT)
+  // {
+  //   Serial.println("AMBIENT");
+  //   selectionMode = AMBIENT;
+  //   setNextScene();
+  //   return;
+  // }
 }
 
 void SceneManager::clockTick(Clock *clock)
@@ -211,39 +211,27 @@ Scene *SceneManager::createTechnoScene(bool breakDown)
     int count = random(2, 6);
     for (int i = 0; i < count; i++)
     {
-      inx = random(allCompositions.size());
+      inx = random(allCompositions.size() - 1);
       scene->addComposition(allCompositions.get(inx));
     }
   }
   else
   {
-    inx = random(allCompositions.size());
+    inx = random(allCompositions.size() - 1);
     scene->addComposition(allCompositions.get(inx));
   }
 
-  if (random(1000) > 500)
-  {
-    scene->applyOperation(SOP_Random);
-  }
-  else
-  {
-    scene->applyOperation(SOP_Sorted);
-  }
+  scene->applyOperation(SOP_Sorted);
 
-  if (random(1000) > 10)
-  {
-    scene->addTimelineOperation(1, SOP_Random);
-  }
-
-  if (random(1000) > 10)
-  {
-    scene->addTimelineOperation(1, SOP_ShiftFW);
-  }
+  scene->addTimelineOperation(1, SOP_ShiftFW);
 
   scene->isMirrored = random(2) > 1;
 
-  scene->speed = random(2, 4);
-  scene->hueOffset = random(255);
+  scene->speed = random(1, 3); // 2 4
+
+  scene->addTimelineOperation(3, SOP_ShiftFW);
+
+  scene->hueOffset = random(0, 255);
 
   return scene;
 }

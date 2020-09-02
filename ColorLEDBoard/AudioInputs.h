@@ -84,10 +84,7 @@ public:
     if (clockIn && clockDeltaTime > CLOCK_DEBOUNCE_TIME)
     {
       lastClockInTime = curTime;
-      if (delegate)
-      {
-        delegate->audioClockTick();
-      }
+
       breakDownLevel = 1;
 
       if (onBreakDown)
@@ -99,6 +96,11 @@ public:
       if (clockDeltaTime > CLOCK_MIN_BPM && clockDeltaTime < CLOCK_MAX_BPM)
       {
         lastKickDeltaTime = clockDeltaTime;
+
+        if (delegate)
+        {
+          delegate->audioClockTick();
+        }
       }
 
       if (clockDeltaTime > CLOCK_MIN_BPM)

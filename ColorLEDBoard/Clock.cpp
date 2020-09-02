@@ -23,7 +23,7 @@ void Clock::begin()
   pinMode(CLOCK_LED_PIN, OUTPUT);
 #endif
   pinMode(CLOCK_TAP_PIN, INPUT_PULLUP);
-  attachInterrupt(CLOCK_TAP_PIN, tap_outer, FALLING);
+  // attachInterrupt(CLOCK_TAP_PIN, tap_outer, FALLING);
 
   setClockSpeed(DEFAULT_BEAT_TIME);
 }
